@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Originals were:
+
+        <color name="colorPrimary">#3F51B5</color>
+        <color name="colorPrimaryDark">#303F9F</color>
+        <color name="colorAccent">#FF4081</color>
+    -->
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#00284d</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="colorActivityTrackerBackground">#f7ffc1</color>
+    <color name="colorNutritionTrackerBackground">#d8ffc7</color>
+    <color name="colorThermostatBackground">#c9f1ff</color>
+    <color name="colorAutomobileBackground">#ffb7b7</color>
+
+    <color name="toolbarColor">#000000</color>
+</resources>

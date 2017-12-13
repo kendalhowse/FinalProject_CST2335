@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorAutomobileBackground"
+    tools:context=".Automobile">
+
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="236dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbar"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"></ListView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="216dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/listView"
+        android:id="@+id/labelLayout"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/dateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:padding="15dp"
+            android:text="Date:" />
+
+
+
+
+        <TextView
+            android:id="@+id/gasLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:text="@string/gasPurchased" />
+
+        <TextView
+            android:id="@+id/priceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:text="@string/cost" />
+
+        <TextView
+            android:id="@+id/odometerLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:text="@string/odometer" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/displayLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="216dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/listView"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dateValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:padding="15dp"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/gasValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="15dp"
+            />
+
+        <TextView
+            android:id="@+id/priceValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="15dp"
+            />
+
+        <TextView
+            android:id="@+id/odometerValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="15dp"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/avgLayout"
+        android:layout_width="match_parent"
+        android:layout_height="216dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/listView"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/avgPriceMonth"
+            android:padding="25dp"
+            android:text="@string/avgPriceMonth"
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/avgLLastMonth"
+            android:padding="25dp"
+            android:text="@string/avgLLastMonth"
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/avgLPerMonth"
+            android:padding="25dp"
+            android:text="@string/avgLLastMonth"
+
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/buttonLayout"
+        android:orientation="horizontal">
+
+
+        <ImageButton
+            android:id="@+id/addButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_add"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_delete"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:id="@+id/editButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_edit"
+            android:layout_weight="1"/>
+
+
+
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="238dp"
+        android:layout_alignBottom="@+id/listView"
+        android:layout_alignParentStart="true"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        />
+
+
+</RelativeLayout>
+

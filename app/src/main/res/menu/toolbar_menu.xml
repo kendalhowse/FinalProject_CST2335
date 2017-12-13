@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+
+    <item
+        android:id="@+id/mi_activityTracker"
+        android:icon="@drawable/ic_running_man"
+        app:showAsAction="always"
+        android:title="Activity Tracker" />
+
+    <item
+        android:id="@+id/mi_nutritionTracker"
+        android:icon="@drawable/ic_food"
+        app:showAsAction="always"
+        android:title="Nutrition Tracker" />
+
+    <item
+        android:id="@+id/mi_thermostat"
+        android:icon="@drawable/ic_thermostat"
+        app:showAsAction="always"
+        android:title="Thermostat" />
+
+    <item
+        android:id="@+id/mi_automobile"
+        android:icon="@drawable/ic_car"
+        app:showAsAction="always"
+        android:title="Automobile" />
+
+    <!--added by Kendal for requirement 10 -->
+    <item
+        android:id="@+id/mi_help"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_action_name"
+        android:title="Help" />
+</menu>

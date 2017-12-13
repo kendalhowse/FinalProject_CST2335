@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">MobileGraphics_FinalProject</string>
+    <string name="gasPurchased">Gas Purchased (L): </string>
+    <string name="cost">Cost: </string>
+    <string name="odometer">Odometer: </string>
+    <string name="date">Date: </string>
+    <string name="authorText">Author: </string>
+    <string name="version">Version Number: </string>
+    <string name="instructions">Instructions: </string>
+    <string name="avgPriceMonth">Average Price Last Month: </string>
+    <string name="avgLLastMonth">Average Litres Purchased Last Month: </string>
+    <string name="avgLPerMonth">Average Litres Purchased Per Month: </string>
+
+    <string name="nutritionTitle">Nutrition Tracker</string>
+    <string name="nutritionAddButton">Add</string>
+    <string name="addNutritionItemHint">Food Item</string>
+    <string name="addNutritionCaloriesHint">Calories</string>
+    <string name="addNutritionFatHint">Total Fat</string>
+    <string name="addNutritionCarbsHint">Carbohydrates</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+</resources>
