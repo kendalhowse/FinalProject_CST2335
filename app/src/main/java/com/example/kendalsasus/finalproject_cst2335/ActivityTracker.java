@@ -11,4 +11,16 @@ public class ActivityTracker extends MainActivity {
         setContentView(R.layout.activity_tracker);
 
     }
+
+    //enter activities:
+    // Activity label - pull down with 5 options (Running, Walking, Biking, Swimming, Skating)
+    // Time label - enter amount of time using textview (x2) - have selection for minutes and hours
+    // Comment label - textview to enter comment
+    // current time attribute - enter into dB too
+
+    //have a listview to show activities previously entered (my activity history) - use fragment - selecting item by date shows details in fragment
+    // should be able to delete or edit past entries and commit back to the dB
+    // monthly statistics
+
+    // *progress bar, button, edittext, toast, snackbar, dialog, help menu item, support one other language (French - will make another strings.xml at the end)
 }
