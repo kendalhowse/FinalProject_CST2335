@@ -12,7 +12,7 @@
     <string name="avgLPerMonth">Average Litres Purchased Per Month: </string>
 
     <string name="nutritionTitle">Nutrition Tracker</string>
-    <string name="nutritionAddButton">Add</string>
+    <string name="nutritionSubmitButton">Submit</string>
     <string name="addNutritionItemHint">Food Item</string>
     <string name="addNutritionCaloriesHint">Calories</string>
     <string name="addNutritionFatHint">Total Fat (g)</string>
