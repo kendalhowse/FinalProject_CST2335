@@ -15,8 +15,8 @@
     <string name="nutritionAddButton">Add</string>
     <string name="addNutritionItemHint">Food Item</string>
     <string name="addNutritionCaloriesHint">Calories</string>
-    <string name="addNutritionFatHint">Total Fat</string>
-    <string name="addNutritionCarbsHint">Carbohydrates</string>
+    <string name="addNutritionFatHint">Total Fat (g)</string>
+    <string name="addNutritionCarbsHint">Carbohydrates (g)</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_main2">Main2Activity</string>
 </resources>
