@@ -23,25 +23,28 @@
             android:id="@+id/add_nutrition_calories_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
             android:hint="@string/addNutritionCaloriesHint"/>
 
         <EditText
             android:id="@+id/add_nutrition_fat_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
             android:hint="@string/addNutritionFatHint"/>
 
         <EditText
             android:id="@+id/add_nutrition_carbs_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
             android:hint="@string/addNutritionCarbsHint"/>
 
         <Button
             android:id="@+id/add_nutrition_entry_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/nutritionAddButton"/>
+            android:text="@string/nutritionSubmitButton"/>
 
     </LinearLayout>
 </FrameLayout>
