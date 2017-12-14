@@ -36,18 +36,40 @@ public class NutritionTracker extends MainActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nutrtion_tracker);
 
+        // initialize ArrayList and ListView fields
         foods = new ArrayList<>();
-
         foodList = findViewById(R.id.food_list);
+
+        // initialize ImageButtons relating to Add, Delete, and Edit.
         ImageButton nutritionAddEntryButton = findViewById(R.id.nutrition_add_entry_button);
+        ImageButton nutritionDeleteEntryButton = findViewById(R.id.nutrition_delete_entry_button);
+        ImageButton nutritionEditEntryButton = findViewById(R.id.nutrition_edit_entry_button);
 
         nutritionAddEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // load the add_nutrition fragment if user clicks Add.
                 startActivityForResult(new Intent(NutritionTracker.this, AddNutritionEntry.class), 0);
             }
         });
 
+        nutritionDeleteEntryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // delete from database if user clicks on Delete.
+                new NutritionQuery().execute("-1");
+            }
+
+        });
+
+        nutritionEditEntryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // do this if user clicks on Edit.
+            }
+        });
+
+        // run everytime, gets entries that have been sitting in database before app start.
         new NutritionQuery().execute("1");
     }
 
@@ -72,9 +94,9 @@ public class NutritionTracker extends MainActivity {
 
         private SQLiteDatabase database;
         private Cursor dbCursor;
-        private NutritionAdapter nutritionAdapter;
+        private NutritionAdapter nutritionAdapter; // used to access ListView Adapter.
         private int processCode;
-        private Bundle info;
+        private Bundle info; // used to pass information accross objects and into database
 
         @Override
         protected String doInBackground(String... args) {
@@ -88,6 +110,8 @@ public class NutritionTracker extends MainActivity {
                 processCode = Integer.parseInt(args[0]);
             } catch(NumberFormatException e) {}
 
+            // process code depends on what button user clicks
+            // 10 is if submit button is pressed in add_nutrition fragment
             switch (processCode) {
                 case 1 :
                     loadPreFoods();
@@ -132,7 +156,7 @@ public class NutritionTracker extends MainActivity {
         private void loadPreFoods() {
 
             dbCursor.moveToFirst();
-            while(!dbCursor.isAfterLast()) {
+            while(!dbCursor.isAfterLast()) { // load up the foods ArrayList
 
                 foods.add(new Food(
                         dbCursor.getString(dbCursor.getColumnIndex(DatabaseHelper.NUTRITION_ITEM)),
@@ -187,7 +211,7 @@ public class NutritionTracker extends MainActivity {
             LayoutInflater inflater = NutritionTracker.this.getLayoutInflater();
             View result = inflater.inflate(R.layout.list_row, null);
             TextView foodEntry = result.findViewById(R.id.row_entry);
-            foodEntry.setText(getItem(index).getFoodItem());
+            foodEntry.setText(getItem(index).getFoodItem() + "\n" + getItem(index).getDate());
             return result;
         }
     }
@@ -200,7 +224,7 @@ public class NutritionTracker extends MainActivity {
         private long timestamp;
         private String date;
 
-        public Food(long id, String item, long timestamp) {
+        public Food(String item, long timestamp) {
             this(item, 0, 0, 0, timestamp);
         }
 
