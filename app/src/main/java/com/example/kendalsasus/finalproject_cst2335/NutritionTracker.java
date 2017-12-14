@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -38,7 +39,7 @@ public class NutritionTracker extends MainActivity {
         foods = new ArrayList<>();
 
         foodList = findViewById(R.id.food_list);
-        Button nutritionAddEntryButton = (Button) findViewById(R.id.nutrition_add_entry_button);
+        ImageButton nutritionAddEntryButton = findViewById(R.id.nutrition_add_entry_button);
 
         nutritionAddEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
