@@ -11,12 +11,17 @@
     <string name="avgLLastMonth">Average Litres Purchased Last Month: </string>
     <string name="avgLPerMonth">Average Litres Purchased Per Month: </string>
 
+
+    <!-- Start of Chris' strings -->
     <string name="nutritionTitle">Nutrition Tracker</string>
     <string name="nutritionSubmitButton">Submit</string>
     <string name="addNutritionItemHint">Food Item</string>
     <string name="addNutritionCaloriesHint">Calories</string>
     <string name="addNutritionFatHint">Total Fat (g)</string>
     <string name="addNutritionCarbsHint">Carbohydrates (g)</string>
+    <!-- End of Chris' strings -->
+
+
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_main2">Main2Activity</string>
 </resources>
