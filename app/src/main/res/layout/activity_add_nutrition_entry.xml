@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorNutritionTrackerBackground"
-    tools:context=".NutritionFragment"
+    tools:context=".nutrition.NutritionFragment"
     android:id="@+id/add_nutrition_frame_layout">
 
     <LinearLayout

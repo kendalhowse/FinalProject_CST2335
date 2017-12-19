@@ -1,5 +1,4 @@
 package com.example.kendalsasus.finalproject_cst2335;
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -7,7 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toolbar;
 
-import com.example.kendalsasus.finalproject_cst2335.R;
+import com.example.kendalsasus.finalproject_cst2335.nutrition.NutritionTracker;
 
 /**
  * Created by Chris on 2017-11-08.

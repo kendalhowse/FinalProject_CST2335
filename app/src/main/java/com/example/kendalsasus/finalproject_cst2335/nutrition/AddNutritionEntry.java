@@ -1,10 +1,12 @@
-package com.example.kendalsasus.finalproject_cst2335;
+package com.example.kendalsasus.finalproject_cst2335.nutrition;
 
-import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
+import com.example.kendalsasus.finalproject_cst2335.R;
+import com.example.kendalsasus.finalproject_cst2335.nutrition.NutritionFragment;
 
 /**
  * Created by Chris on 2017-12-09.

@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
         <activity android:name=".Automobile" />
-        <activity android:name=".NutritionTracker" />
+        <activity android:name=".nutrition.NutritionTracker" />
         <activity android:name=".ActivityTracker">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +20,7 @@
         </activity>
         <activity android:name=".Thermostat" />
         <activity android:name=".AddGasEntry" />
-        <activity android:name=".AddNutritionEntry"></activity>
+        <activity android:name=".nutrition.AddNutritionEntry"></activity>
     </application>
 
 </manifest>

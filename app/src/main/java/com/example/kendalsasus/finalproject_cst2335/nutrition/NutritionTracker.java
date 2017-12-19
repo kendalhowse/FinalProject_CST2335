@@ -1,4 +1,4 @@
-package com.example.kendalsasus.finalproject_cst2335;
+package com.example.kendalsasus.finalproject_cst2335.nutrition;
 
 
 
@@ -13,10 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.kendalsasus.finalproject_cst2335.DatabaseHelper;
+import com.example.kendalsasus.finalproject_cst2335.MainActivity;
+import com.example.kendalsasus.finalproject_cst2335.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

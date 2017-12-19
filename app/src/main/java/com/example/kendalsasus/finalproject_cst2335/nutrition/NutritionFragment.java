@@ -1,4 +1,4 @@
-package com.example.kendalsasus.finalproject_cst2335;
+package com.example.kendalsasus.finalproject_cst2335.nutrition;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -12,8 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.Calendar;
-import java.util.Date;
+import com.example.kendalsasus.finalproject_cst2335.R;
 
 /**
  * Created by Chris on 2017-12-09.
