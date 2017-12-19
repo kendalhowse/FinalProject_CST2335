@@ -2,6 +2,7 @@ package com.example.kendalsasus.finalproject_cst2335.nutrition;
 
 
 
+import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 import com.example.kendalsasus.finalproject_cst2335.DatabaseHelper;
 import com.example.kendalsasus.finalproject_cst2335.MainActivity;
 import com.example.kendalsasus.finalproject_cst2335.R;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +36,7 @@ public class NutritionTracker extends MainActivity {
     private final static String ACTIVITY_NAME = "NutritionTracker";
     private ArrayList<Food> foods;
     private ListView foodList;
+    private TextView tvTotalCalories;
 
 
     @Override
@@ -47,6 +52,7 @@ public class NutritionTracker extends MainActivity {
         ImageButton nutritionAddEntryButton = findViewById(R.id.nutrition_add_entry_button);
         ImageButton nutritionDeleteEntryButton = findViewById(R.id.nutrition_delete_entry_button);
         ImageButton nutritionEditEntryButton = findViewById(R.id.nutrition_edit_entry_button);
+        tvTotalCalories = findViewById(R.id.nutrition_total_calories_textView);
 
         nutritionAddEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +80,43 @@ public class NutritionTracker extends MainActivity {
 
         // run everytime, gets entries that have been sitting in database before app start.
         new NutritionQuery().execute("1");
+
+        foodList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                inflateNutritionDetailsFragment(i);
+            }
+        });
+    }
+
+    // inflates a fragment showing the details of food item that use clicked on
+    private void inflateNutritionDetailsFragment(int i) {
+        if(!foods.isEmpty()) {
+            Food food = foods.get(i);
+            Bundle fragmentInfo = new Bundle();
+            fragmentInfo.putInt("processCode", 1);
+            fragmentInfo.putString("itemDetails", food.getFoodItem());
+            fragmentInfo.putString("calorieDetails", String.valueOf(food.getCalories()));
+            fragmentInfo.putString("fatDetails", String.valueOf(food.getFat()));
+            fragmentInfo.putString("carbDetails", String.valueOf(food.getCarbohydrates()));
+            fragmentInfo.putString("dateDetails", food.getWordedDate());
+            NutritionFragment detailsFragment = new NutritionFragment();
+            detailsFragment.setArguments(fragmentInfo);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.nutrition_details_fragment, detailsFragment);
+            transaction.commit();
+        }
+    }
+
+    private void setTotalCaloriesTextView() {
+        String currentDate = new SimpleDateFormat("MMddyyyy").format(new Date(System.currentTimeMillis()));
+        double totalCalories = 0;
+        for(Food food : foods) {
+            if(food.getBasicDate().equals(currentDate)) {
+                totalCalories += food.getCalories();
+            }
+        }
+        tvTotalCalories.setText(getApplicationContext().getString(R.string.daily_calories_eaten) + " " + String.valueOf(totalCalories) + " g");
     }
 
     @Override
@@ -91,7 +134,7 @@ public class NutritionTracker extends MainActivity {
         }
     }
 
-
+// ============== CLASS NUTRITION QUERY START ==================================================================================================================
 
     private class NutritionQuery extends AsyncTask<String, Integer, String> {
 
@@ -138,6 +181,7 @@ public class NutritionTracker extends MainActivity {
 
         }
 
+        // update views on GUI thread
         @Override
         protected void onPostExecute(String result) {
             nutritionAdapter = new NutritionAdapter(NutritionTracker.this);
@@ -149,6 +193,7 @@ public class NutritionTracker extends MainActivity {
                     nutritionAdapter.notifyDataSetChanged();
                     break;
             }
+            setTotalCaloriesTextView();
             database.close();
         }
 
@@ -196,7 +241,11 @@ public class NutritionTracker extends MainActivity {
             database.insert(DatabaseHelper.NUTRITION_TABLE, "NULL MESSAGE", values);
         }
     }
+// ================== CLASS NUTRITION QUERY END ==================================================================================================================================
 
+
+
+// ================== CLASS NUTRITION ADAPTER START ===============================================================================================================================
     // Used to present the list view in Nutrition Tracker
     private class NutritionAdapter extends ArrayAdapter<Food> {
 
@@ -217,10 +266,15 @@ public class NutritionTracker extends MainActivity {
             LayoutInflater inflater = NutritionTracker.this.getLayoutInflater();
             View result = inflater.inflate(R.layout.list_row, null);
             TextView foodEntry = result.findViewById(R.id.row_entry);
-            foodEntry.setText(getItem(index).getFoodItem() + "\n" + getItem(index).getDate());
+            foodEntry.setText(getItem(index).getFoodItem());
+            TextView foodDate = result.findViewById(R.id.row_sub_entry);
+            foodDate.setText(getItem(index).getWordedDate());
             return result;
         }
     }
+// ========================= CLASS NUTRITION ADAPTER END =====================================================================================================================================
+
+
 
     // DAO for Nutrition table in database
     private class Food {
@@ -229,7 +283,8 @@ public class NutritionTracker extends MainActivity {
         private double fat;
         private double carbohydrates;
         private long timestamp;
-        private String date;
+        private String wordedDate;
+        private String basicDate;
 
         public Food(String item, long timestamp) {
             this(item, 0, 0, 0, timestamp);
@@ -241,7 +296,8 @@ public class NutritionTracker extends MainActivity {
             this.fat = fat;
             this.carbohydrates = carbohydrates;
             this.timestamp = timestamp;
-            convertTimestampToDate();
+            this.wordedDate = getFormattedDate("MMMM dd yyyy 'at' HH:mm:ss z");
+            this.basicDate = getFormattedDate("MMddyyyy");
         }
 
         public String getFoodItem() { return this.item; }
@@ -249,11 +305,13 @@ public class NutritionTracker extends MainActivity {
         public double getFat() { return this.fat; }
         public double getCarbohydrates() { return this.carbohydrates; }
         public long getTimestamp() { return this.timestamp; }
-        public String getDate() { return this.date; }
+        public String getWordedDate() { return this.wordedDate; }
+        public String getBasicDate() { return this.basicDate; }
 
-        private void convertTimestampToDate() {
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("MMMM dd yyyy 'at' HH:mm:ss z");
-            this.date = dateFormatter.format(new Date(this.timestamp));
+        private String getFormattedDate(String dateFormat) {
+            SimpleDateFormat dateFormatter = new SimpleDateFormat(dateFormat);
+            String date = dateFormatter.format(new Date(this.timestamp));
+            return date;
         }
     }
 }
