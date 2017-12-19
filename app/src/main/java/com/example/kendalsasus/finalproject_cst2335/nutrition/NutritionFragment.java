@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kendalsasus.finalproject_cst2335.R;
@@ -21,27 +22,42 @@ import com.example.kendalsasus.finalproject_cst2335.R;
 public class NutritionFragment extends Fragment {
 
     private final static String FRAGMENT_NAME = "NutritionFragment";
+    private View nutritionFragmentView;
     private boolean isTablet;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(FRAGMENT_NAME, "In onCreateView for Fragment");
-        final View addNutritionView = inflater.inflate(R.layout.activity_add_nutrition_entry, container, false);
+        Bundle passedInfo = getArguments();
 
-        addNutritionEntry(addNutritionView);
+        switch(passedInfo.getInt("processCode")) {
 
-        return addNutritionView;
+            case 1:
+                nutritionFragmentView = inflater.inflate(R.layout.activity_nutrition_details, container, false);
+                showFoodDetails(nutritionFragmentView, passedInfo);
+                break;
+
+            case 10:
+                nutritionFragmentView = inflater.inflate(R.layout.activity_add_nutrition_entry, container, false);
+                addNutritionEntry(nutritionFragmentView);
+                break;
+        }
+        return nutritionFragmentView;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
+    private void showFoodDetails(final View layoutView, Bundle info) {
+            TextView itemDetails = layoutView.findViewById(R.id.nutrition_item_details);
+            TextView calorieDetails = layoutView.findViewById(R.id.nutrition_calories_details);
+            TextView fatDetails = layoutView.findViewById(R.id.nutrition_fat_details);
+            TextView carbDetails = layoutView.findViewById(R.id.nutrition_carbs_details);
+            TextView dateDetails = layoutView.findViewById(R.id.nutrition_date_details);
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+            itemDetails.setText(info.getString("itemDetails"));
+            calorieDetails.setText(getActivity().getString(R.string.nutrition_details_calories) + " " + info.getString("calorieDetails") + " g");
+            fatDetails.setText(getActivity().getString(R.string.nutrition_details_fat) + " " + info.getString("fatDetails") + " g");
+            carbDetails.setText(getActivity().getString(R.string.nutrition_details_carbs) + " " + info.getString("carbDetails") + " g");
+            dateDetails.setText(getActivity().getString(R.string.nutrition_details_date) +  " " + info.getString("dateDetails"));
     }
 
     public void addNutritionEntry(final View layoutView) {
@@ -52,11 +68,11 @@ public class NutritionFragment extends Fragment {
             @Override
             public void onClick(View handlerView) {
                 // is the EditText for Food Item empty?
-                if(etAddNutritionItem.getText() == null || etAddNutritionItem.getText().equals("")) {
+                if(etAddNutritionItem.getText().toString().matches("")) {
                     // if so, alert the user
                     Toast.makeText(
                             handlerView.getContext(),
-                            "You cannot leave Food Item field empty.",
+                            getActivity().getString(R.string.blank_food_item_entry_warning),
                             Toast.LENGTH_LONG
                     ).show();
                 }
@@ -109,4 +125,14 @@ public class NutritionFragment extends Fragment {
     }
 
     public void setTablet(boolean isTablet) { this.isTablet = isTablet; }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

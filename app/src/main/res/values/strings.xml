@@ -13,12 +13,17 @@
 
 
     <!-- Start of Chris' strings -->
-    <string name="nutritionTitle">Nutrition Tracker</string>
-    <string name="nutritionSubmitButton">Submit</string>
-    <string name="addNutritionItemHint">Food Item</string>
-    <string name="addNutritionCaloriesHint">Calories</string>
-    <string name="addNutritionFatHint">Total Fat (g)</string>
-    <string name="addNutritionCarbsHint">Carbohydrates (g)</string>
+    <string name="nutrition_submit_button">Submit</string>
+    <string name="add_nutrition_item_hint">Food Item</string>
+    <string name="add_nutrition_calories_hint">Calories</string>
+    <string name="add_nutrition_fat_hint">Total Fat (g)</string>
+    <string name="add_nutrition_carbs_hint">Carbohydrates (g)</string>
+    <string name="blank_food_item_entry_warning">You cannot leave Food Item field empty.</string>
+    <string name="daily_calories_eaten">Daily Calories Eaten:</string>
+    <string name="nutrition_details_calories">Calories:</string>
+    <string name="nutrition_details_fat">Total Fat:</string>
+    <string name="nutrition_details_carbs">Total Carbohydrates:</string>
+    <string name="nutrition_details_date">Added on</string>
     <!-- End of Chris' strings -->
 
 
