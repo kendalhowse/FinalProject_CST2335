@@ -170,6 +170,7 @@ public class NutritionTracker extends MainActivity {
             }
         }
 
+        // provides a cursor to go through all records in the Nutrition table of the database
         private Cursor nutritionTableQuery() {
             return database.query(DatabaseHelper.NUTRITION_TABLE,
                     new String[]{DatabaseHelper.ID,
@@ -181,6 +182,7 @@ public class NutritionTracker extends MainActivity {
                     null, null, null, null, null);
         }
 
+        // adds an entry to Nutrition table in the database
         private void writeToDatabase(String item, double calories, double fat, double carbohydrates, long timestamp) {
             ContentValues values = new ContentValues();
             values.put(DatabaseHelper.NUTRITION_ITEM, item);
@@ -192,6 +194,7 @@ public class NutritionTracker extends MainActivity {
         }
     }
 
+    // Used to present the list view in Nutrition Tracker
     private class NutritionAdapter extends ArrayAdapter<Food> {
 
         private NutritionQuery nutritionQuery;
@@ -216,6 +219,7 @@ public class NutritionTracker extends MainActivity {
         }
     }
 
+    // DAO for Nutrition table in database
     private class Food {
         private String item;
         private double calories;
