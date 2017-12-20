@@ -28,26 +28,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/* @author Kendal Howse */
 public class Automobile extends MainActivity {
 
-    ListView listView = null;
-    ImageButton addButton = null;
-    ImageButton deleteButton = null;
-    ImageButton editButton = null;
-    Button avgButton = null;
-    List<Auto> gasList = new ArrayList<>();
-    GasListAdapter gasAdapter;
-    AutoDatabaseConnection adbc;
-    int requestCode;
+    public ListView listView = null;
+    public ImageButton addButton = null;
+    public ImageButton deleteButton = null;
+    public ImageButton editButton = null;
+    public Button avgButton = null;
+    public List<Auto> gasList = new ArrayList<>();
+    public GasListAdapter gasAdapter;
+    public AutoDatabaseConnection adbc;
+    public int requestCode;
 
     public Automobile(){}
-
-
-    public List<Auto> getGasList(){
-        return gasList;
-    }
-
-    /* @author Kendal Howse */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +66,7 @@ public class Automobile extends MainActivity {
         avgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //changes the visibility of unnecessary layouts
                 LinearLayout avgL = findViewById(R.id.avgLayoutHolder);
                 avgL.setVisibility(View.INVISIBLE);
 
@@ -83,14 +78,12 @@ public class Automobile extends MainActivity {
 
                 avgButton.setVisibility(View.INVISIBLE);
 
-
+                //gets the info from database and displays it per month
                 TextView displayLeft = findViewById(R.id.avgLPerMonth1);
                 displayLeft.setText(adbc.getAvgPerMonth()[0]);
 
                 TextView displayRight = findViewById(R.id.avgLPerMonth2);
                 displayRight.setText(adbc.getAvgPerMonth()[1]);
-
-
 
             }
         });
@@ -106,6 +99,7 @@ public class Automobile extends MainActivity {
                 intent.putExtra("requestCode", requestCode);
                 startActivityForResult(intent, requestCode);
 
+                //sets appropriate visibility
                 LinearLayout avgL = findViewById(R.id.avgLayoutHolder);
                 avgL.setVisibility(View.VISIBLE);
                 avgButton.setVisibility(View.VISIBLE);
@@ -227,6 +221,7 @@ public class Automobile extends MainActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //adds to database
 
+        gasAdapter.notifyDataSetChanged();
         try {
             AutoDatabaseConnection conn = new AutoDatabaseConnection();
             conn.setInfo(data.getExtras());
@@ -236,7 +231,7 @@ public class Automobile extends MainActivity {
 
         }
 
-        gasAdapter.notifyDataSetChanged();
+
 
     }
 
@@ -464,22 +459,9 @@ public class Automobile extends MainActivity {
 
 
             results.moveToPosition(position);
-            int num = results.getCount();
-            long please = results.getLong(results.getColumnIndex(DatabaseHelper.ID));
+            long num = results.getLong(results.getColumnIndex(DatabaseHelper.ID));
 
-            return please;
-
-
-            /*results = db.rawQuery("SELECT * FROM " + ChatDatabaseHelper.TABLE_NAME, null);
-
-
-            results.moveToPosition(position);
-
-            return results.getLong(results.getColumnIndex(ChatDatabaseHelper.KEY_ID));
-*/
-
-
-
+            return num;
 
         }
         //calculates the average gas price for the last month of data
@@ -534,18 +516,7 @@ public class Automobile extends MainActivity {
 
         public String[] getAvgPerMonth(){
 
-            String [] showMonth = new String[2];/*"January: " + adbc.getAvgPerMonth("January") + "\n" +
-                                    "February" + adbc.getAvgPerMonth("February") + "\n" +
-                                    "March: " + adbc.getAvgPerMonth("March") + "\n" +
-                                    "April: " + adbc.getAvgPerMonth("April") + "\n" +
-                                    "May: " + adbc.getAvgPerMonth("May") + "\n" +
-                                    "June: " + adbc.getAvgPerMonth("June") + "\n" +
-                                    "July: " + adbc.getAvgPerMonth("July") + "\n" +
-                                    "August: " + adbc.getAvgPerMonth("August") + "\n" +
-                                    "September: " + adbc.getAvgPerMonth("September") + "\n" +
-                                    "October: " + adbc.getAvgPerMonth("October") + "\n" +
-                                    "November: " + adbc.getAvgPerMonth("November") + "\n" +
-                                    "December: " + adbc.getAvgPerMonth("December");*/
+            String [] showMonth = new String[2];
             String [] monthArr = new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
             double [] numArr = new double[12];
             double amt = 0;

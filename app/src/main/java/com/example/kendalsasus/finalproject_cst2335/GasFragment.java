@@ -2,7 +2,6 @@ package com.example.kendalsasus.finalproject_cst2335;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,30 +11,29 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
-/**
- * Created by Kendal's Asus on 2017-12-12.
- */
 
 public class GasFragment extends Fragment {
 
-    boolean isTablet;
-    FrameLayout frameLayout;
-    boolean dataAccepted;
-    Automobile automobile;
-    int requestCode;
-    long id;
-    Double litres;
-    Double price;
-    Double odometer;
-    EditText gasEntry;
-    EditText priceEntry;
-    EditText odometerEntry;
-    int position;
+    public boolean isTablet;
+    public FrameLayout frameLayout;
+    public boolean dataAccepted;
+    public Automobile automobile;
+    public int requestCode;
+    public long id;
+    public Double litres;
+    public Double price;
+    public Double odometer;
+    public EditText gasEntry;
+    public EditText priceEntry;
+    public EditText odometerEntry;
+    public int position;
 
+    public GasFragment(){
+
+    }
     public GasFragment(Automobile auto){
        automobile = auto;
     }
@@ -94,8 +92,6 @@ public class GasFragment extends Fragment {
         frameLayout = (FrameLayout) inflater.inflate(R.layout.activity_add_gas_entry, container, false);
         Button submit = frameLayout.findViewById(R.id.submitButton);
 
-
-
         gasEntry = frameLayout.findViewById(R.id.gasAmount);
         priceEntry = frameLayout.findViewById(R.id.cost);
         odometerEntry = frameLayout.findViewById(R.id.km);
@@ -136,18 +132,11 @@ public class GasFragment extends Fragment {
     }
 
 
-    private Bundle addGasInfo(View view){
+    private Bundle addGasInfo(View view) {
         Bundle info = new Bundle();
         double newGas = 0;
         double newPrice = 0;
         double newOdometer = 0;
-        // this.frameLayout = frameLayout;
-/*
-
-
-        gasEntry = view.findViewById(R.id.gasAmount);
-        priceEntry = view.findViewById(R.id.cost);
-        odometerEntry = view.findViewById(R.id.km);*/
 
         try {
             newGas = Double.parseDouble(gasEntry.getText().toString());
@@ -165,13 +154,12 @@ public class GasFragment extends Fragment {
 
         }
 
-        if(newGas == 0.0 && newPrice == 0.0 && newOdometer == 0.0){
+        if (newGas == 0.0 && newPrice == 0.0 && newOdometer == 0.0) {
 
             Toast toast = Toast.makeText(getActivity(), "Please enter at least one field", Toast.LENGTH_SHORT);
             toast.show();
             dataAccepted = false;
-        }
-        else {
+        } else {
             dataAccepted = true;
         }
         info.putDouble("Gas", newGas);
@@ -179,17 +167,14 @@ public class GasFragment extends Fragment {
         info.putDouble("Odometer", newOdometer);
         info.putLong("Timestamp", System.currentTimeMillis());
 
-        if(requestCode == 2){
+        if (requestCode == 2) {
             info.putLong("ID", id);
             info.putInt("Position", position);
         }
 
 
         return info;
-    }
 
-    public void setTablet(boolean isTablet){
-        this.isTablet = isTablet;
     }
 
     public void updateGasInfo(){
