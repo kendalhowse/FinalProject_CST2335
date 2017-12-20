@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,17 +21,65 @@ import android.widget.Toast;
  */
 
 public class GasFragment extends Fragment {
+
     boolean isTablet;
     FrameLayout frameLayout;
     boolean dataAccepted;
+    Automobile automobile;
+    int requestCode;
+    long id;
+    Double litres;
+    Double price;
+    Double odometer;
+    EditText gasEntry;
+    EditText priceEntry;
+    EditText odometerEntry;
+    int position;
 
-    public GasFragment(){
-
+    public GasFragment(Automobile auto){
+       automobile = auto;
     }
 
     @Override
-    public void onAttach(Activity activity){
+    public void onAttach(Activity activity) {
         super.onAttach(activity);
+
+        Bundle passedInfo = getArguments();
+
+        requestCode = 0;
+
+        if(passedInfo != null) {
+            requestCode = passedInfo.getInt("requestCode");
+
+
+            try{
+                id = passedInfo.getLong("ID");
+            }catch(NullPointerException n){
+
+            }
+            try{
+                position = passedInfo.getInt("Position");
+            }catch(NullPointerException n){
+
+            }
+
+            try{
+                litres = passedInfo.getDouble("litres");
+            }catch(NullPointerException n){
+
+            }
+            try{
+                price = passedInfo.getDouble("price");
+            }catch(NullPointerException n){
+
+            }
+            try{
+                odometer = passedInfo.getDouble("odometer");
+            }catch(NullPointerException n){
+
+            }
+        }
+        Log.i("Passed key", ""+requestCode);
 
     }
 
@@ -45,40 +94,60 @@ public class GasFragment extends Fragment {
         frameLayout = (FrameLayout) inflater.inflate(R.layout.activity_add_gas_entry, container, false);
         Button submit = frameLayout.findViewById(R.id.submitButton);
 
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle newEntry = getGasInfo(frameLayout);
-                Intent sendInfo = new Intent(frameLayout.getContext(), Automobile.class);
-                sendInfo.putExtras(newEntry);
-                getActivity().setResult(10, sendInfo);
 
-                if(dataAccepted) {
 
-                    if (isTablet) {
-                        getActivity().getFragmentManager().beginTransaction().remove(GasFragment.this).commit();
-                    } else {
-                        getActivity().finish();
+        gasEntry = frameLayout.findViewById(R.id.gasAmount);
+        priceEntry = frameLayout.findViewById(R.id.cost);
+        odometerEntry = frameLayout.findViewById(R.id.km);
+
+        if(requestCode == 2){
+            updateGasInfo();
+
+        }
+
+
+            submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle newEntry = addGasInfo(frameLayout);
+                    Intent sendInfo = new Intent(frameLayout.getContext(), Automobile.class);
+                    sendInfo.putExtras(newEntry);
+                    if(requestCode == 1) {
+                        getActivity().setResult(10, sendInfo);
                     }
-                }
+                    else if(requestCode == 2) {
+                        getActivity().setResult(20, sendInfo);
+                    }
 
-            }
-        });
+                    if(dataAccepted) {
+
+                        if (isTablet) {
+                            getActivity().getFragmentManager().beginTransaction().remove(GasFragment.this).commit();
+                        } else {
+                            getActivity().finish();
+                        }
+                    }
+
+                }
+            });
+
+
         return frameLayout;
     }
 
 
-    private Bundle getGasInfo(View view){
+    private Bundle addGasInfo(View view){
         Bundle info = new Bundle();
         double newGas = 0;
         double newPrice = 0;
         double newOdometer = 0;
         // this.frameLayout = frameLayout;
+/*
 
 
-        EditText gasEntry = view.findViewById(R.id.gasAmount);
-        EditText priceEntry = view.findViewById(R.id.cost);
-        EditText odometerEntry = view.findViewById(R.id.km);
+        gasEntry = view.findViewById(R.id.gasAmount);
+        priceEntry = view.findViewById(R.id.cost);
+        odometerEntry = view.findViewById(R.id.km);*/
 
         try {
             newGas = Double.parseDouble(gasEntry.getText().toString());
@@ -103,15 +172,18 @@ public class GasFragment extends Fragment {
             dataAccepted = false;
         }
         else {
-
-
-
             dataAccepted = true;
         }
         info.putDouble("Gas", newGas);
         info.putDouble("Price", newPrice);
         info.putDouble("Odometer", newOdometer);
         info.putLong("Timestamp", System.currentTimeMillis());
+
+        if(requestCode == 2){
+            info.putLong("ID", id);
+            info.putInt("Position", position);
+        }
+
 
         return info;
     }
@@ -120,5 +192,11 @@ public class GasFragment extends Fragment {
         this.isTablet = isTablet;
     }
 
+    public void updateGasInfo(){
+
+        gasEntry.setText(Double.toString(litres));
+        priceEntry.setText(Double.toString(price));
+        odometerEntry.setText(Double.toString(odometer));
+    }
 
 }

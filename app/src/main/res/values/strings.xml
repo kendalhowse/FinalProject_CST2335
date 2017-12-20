@@ -8,8 +8,8 @@
     <string name="version">Version Number: </string>
     <string name="instructions">Instructions: </string>
     <string name="avgPriceMonth">Average Price Last Month: </string>
-    <string name="avgLLastMonth">Average Litres Purchased Last Month: </string>
-    <string name="avgLPerMonth">Average Litres Purchased Per Month: </string>
+    <string name="avgLLastMonth">Litres Purchased Last Month: </string>
+    <string name="avgLPerMonth">Average Litres Purchased Per Month</string>
 
 
     <!-- Start of Chris' strings -->

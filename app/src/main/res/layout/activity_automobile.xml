@@ -16,131 +16,203 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/toolbar"
         android:visibility="invisible"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"></ListView>
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        android:focusable="true"></ListView>
 
+    <View
+        android:id="@+id/filler"
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        android:layout_above="@id/labelLayoutHolder"
+        android:layout_below="@id/listView"
+
+        android:layout_marginBottom="-5dp"
+        android:background="@color/barColour" />
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="216dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/listView"
-        android:id="@+id/labelLayout"
-        android:orientation="vertical"
-        android:visibility="invisible">
-
-        <TextView
-            android:id="@+id/dateLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:padding="15dp"
-            android:text="Date:" />
-
-
-
-
-        <TextView
-            android:id="@+id/gasLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="15dp"
-            android:text="@string/gasPurchased" />
-
-        <TextView
-            android:id="@+id/priceLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="15dp"
-            android:text="@string/cost" />
-
-        <TextView
-            android:id="@+id/odometerLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="15dp"
-            android:text="@string/odometer" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/displayLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="216dp"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/listView"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/dateValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:padding="15dp"
-            android:textAlignment="textEnd" />
-
-        <TextView
-            android:id="@+id/gasValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="15dp"
-            />
-
-        <TextView
-            android:id="@+id/priceValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="15dp"
-            />
-
-        <TextView
-            android:id="@+id/odometerValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="15dp"
-            />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/avgLayout"
+        android:id="@+id/labelLayoutHolder"
         android:layout_width="match_parent"
         android:layout_height="216dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/listView"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:id="@+id/labelLayout"
+            android:layout_width="match_parent"
+            android:layout_height="322dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/dateLabel"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:padding="15dp"
+                android:text="@string/date"
+
+                />
+
+            <TextView
+                android:id="@+id/gasLabel"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:text="@string/gasPurchased"
+
+                />
+
+            <TextView
+                android:id="@+id/priceLabel"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:text="@string/avgLLastMonth" />
+            <TextView
+                android:id="@+id/kmLabel"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:text="@string/odometer" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dataLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/dateField"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:padding="10dp"
+                android:text="test"
+                android:textStyle="bold"
+
+                />
+
+            <TextView
+                android:id="@+id/gasField"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:text="test"
+                android:textStyle="bold"
+
+                />
+
+            <TextView
+                android:id="@+id/priceField"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:text="test"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/kmField"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:text="test"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/avgLayoutHolder"
+        android:layout_width="match_parent"
+        android:layout_height="216dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/listView"
+        android:orientation="horizontal"
         android:visibility="visible">
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/avgLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/avgPriceMonth"
-            android:padding="25dp"
-            android:text="@string/avgPriceMonth"
+            android:layout_height="322dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            />
-        <TextView
+            <TextView
+                android:id="@+id/avgPriceMonth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="@string/avgPriceMonth"
+
+                />
+
+            <TextView
+                android:id="@+id/avgLLastMonth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="@string/avgLLastMonth"
+
+                />
+
+           <!-- <TextView
+                android:id="@+id/avgLPerMonth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="@string/avgLPerMonth" />-->
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/numLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/avgLLastMonth"
-            android:padding="25dp"
-            android:text="@string/avgLLastMonth"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
 
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/avgLPerMonth"
-            android:padding="25dp"
-            android:text="@string/avgLLastMonth"
+            <TextView
+                android:id="@+id/avgPriceMonthDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:textStyle="bold"
 
-            />
+
+                />
+
+            <TextView
+                android:id="@+id/avgLLastMonthDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:padding="20dp"
+                android:textStyle="bold"
+
+                />
+
+           <!-- <TextView
+                android:id="@+id/avgLPerMonthDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="74dp"
+                android:padding="20dp"
+                android:textStyle="bold"
+
+                />-->
+
+        </LinearLayout>
+
     </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/avgLPerMonthButton"
+        android:layout_above="@id/buttonLayout"
+        android:text="@string/avgLPerMonth"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -172,8 +244,6 @@
             android:layout_weight="1"/>
 
 
-
-
     </LinearLayout>
 
     <ProgressBar
@@ -184,6 +254,51 @@
         android:layout_alignParentStart="true"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/monthlyDisplay"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/listView"
+        android:layout_above="@id/buttonLayout"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/avgLPerMonthDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="74dp"
+            android:padding="20dp"
+            android:textStyle="bold"
+            android:text="@string/avgLPerMonth"
+
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/monthlyDataHolder"
+            android:orientation="horizontal">
+        <TextView
+            android:id="@+id/avgLPerMonth1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+            android:layout_weight="1"
+             />
+            <TextView
+                android:id="@+id/avgLPerMonth2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
+
+
+
+    </LinearLayout>
 
 
 </RelativeLayout>

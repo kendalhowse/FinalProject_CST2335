@@ -10,6 +10,7 @@
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#00284d</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="barColour">#e2e1e1</color>
 
     <color name="colorActivityTrackerBackground">#f7ffc1</color>
     <color name="colorNutritionTrackerBackground">#d8ffc7</color>

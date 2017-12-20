@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Layout"
+    android:layout_width="match_parent"
+    android:layout_height="216dp"
+    android:layout_alignParentStart="true"
+    android:layout_below="@+id/listView"
+    android:orientation="horizontal"
+    android:visibility="visible">
+
+    <LinearLayout
+        android:id="@+id/avgLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/avgPriceMonth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="@string/avgPriceMonth"
+
+            />
+
+        <TextView
+            android:id="@+id/avgLLastMonth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="@string/avgLLastMonth"
+
+            />
+
+        <TextView
+            android:id="@+id/avgLPerMonth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="@string/avgLLastMonth" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/numLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/avgPriceMonthDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+
+
+            />
+
+        <TextView
+            android:id="@+id/avgLLastMonthDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:padding="20dp"
+
+            />
+
+        <TextView
+            android:id="@+id/avgLPerMonthDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="74dp"
+            android:padding="20dp"
+
+            />
+
+    </LinearLayout>
+</LinearLayout>

@@ -16,16 +16,28 @@ import android.widget.Toast;
 
 public class AddGasEntry extends AppCompatActivity {
     Automobile auto = new Automobile();
+    int requestCode;
+
+
+
+    public int getRequestCode() {
+        return requestCode;
+    }
+
+    public void setRequestCode(int requestCode) {
+        this.requestCode = requestCode;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_gas_entry);
 
+
         Log.i("Phone", "This is a phone");
         Bundle info = getIntent().getExtras();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        GasFragment gasFragment = new GasFragment();
+        FragmentTransaction ft = getFragmentManager().beginTransaction().addToBackStack(null);
+        GasFragment gasFragment = new GasFragment(auto);
         gasFragment.setArguments(info);
         ft.add(R.id.addFrameLayout, gasFragment);
         ft.commit();
@@ -82,4 +94,5 @@ public class AddGasEntry extends AppCompatActivity {
         });*/
 
     }
+
 }
