@@ -12,11 +12,13 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -158,6 +160,41 @@ public class NutritionTracker extends MainActivity {
             }
         }
         tvTotalCalories.setText(getApplicationContext().getString(R.string.nutrition_daily_calories_eaten) + " " + String.valueOf(totalCalories) + " g");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        super.onOptionsItemSelected(menuItem);
+        if(menuItem.getItemId() == R.id.mi_help) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(NutritionTracker.this);
+            LinearLayout layout = (LinearLayout)getLayoutInflater().inflate(R.layout.dialog_box, null);
+            TextView tvAuthor = layout.findViewById(R.id.author);
+            TextView tvVersion = layout.findViewById(R.id.versionNum);
+            TextView tvInstructions = layout.findViewById(R.id.instructions);
+            String instructions = "\n1. Add Nutrition Entry\n" +
+                    "Click on 'plus' icon at bottom of screen.  This will take you to new page where you can add necessary nutritional information. " +
+                    "Note: You cannot leave item field blank.\n" +
+                    "\n2. Display Nutrition Entry Details\n" +
+                    "To display more details for nutrition entry, click on item in list and more details regarding nutritional info will be displayed below.\n" +
+                    "\n3. Delete Nutrition Entry \n" +
+                    "Click on item in list. Click on 'trash can' icon at bottom of screen\n" +
+                    "\n4. Edit Nutrition Entry\n" +
+                    "Click on the item in the list. Click on 'pencil icon' at bottom of screen. This display page similar to 'Add Nutrition Entry' screen. " +
+                    "Edit values you wish to change and " +
+                    "click 'COMMIT CHANGES'. Note: You cannot leave item field blank.";
+            tvAuthor.setText(getApplication().getString(R.string.authorText) + " Chris Labelle");
+            tvVersion.setText(getApplication().getString(R.string.version) + " 1.0");
+            tvInstructions.setText(getApplication().getString(R.string.instructions) + instructions);
+            builder.setView(layout);
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            });
+            builder.create().show();
+        }
+        return true;
     }
 
     @Override
