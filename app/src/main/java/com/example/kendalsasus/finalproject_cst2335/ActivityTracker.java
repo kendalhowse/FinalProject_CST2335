@@ -2,13 +2,28 @@ package com.example.kendalsasus.finalproject_cst2335;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
 public class ActivityTracker extends MainActivity {
+
+    ListView activityList;
+    LinearLayout buttonBar;
+    ImageButton addBtn;
+    ImageButton deleteBtn;
+    ImageButton editBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracker);
+
+        activityList = findViewById(R.id.activity_list);
+        buttonBar = findViewById(R.id.activity_button_bar);
+        addBtn = findViewById(R.id.activity_button_add);
+        deleteBtn = findViewById(R.id.activity_button_delete);
+        editBtn = findViewById(R.id.activity_button_edit);
 
     }
 
