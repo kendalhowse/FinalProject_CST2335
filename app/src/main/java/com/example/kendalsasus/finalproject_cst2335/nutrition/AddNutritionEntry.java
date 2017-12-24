@@ -23,8 +23,7 @@ public class AddNutritionEntry extends AppCompatActivity {
         Log.i(ACTIVITY_NAME, "Device is phone");
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         NutritionFragment nutritionFragment = new NutritionFragment();
-        Bundle info = new Bundle();
-        info.putInt("processCode", 10);
+        Bundle info = getIntent().getExtras();
         nutritionFragment.setArguments(info);
         nutritionFragment.setTablet(false);
         transaction.replace(R.id.add_nutrition_frame_layout, nutritionFragment);

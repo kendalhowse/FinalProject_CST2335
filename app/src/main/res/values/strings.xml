@@ -14,16 +14,24 @@
 
     <!-- Start of Chris' strings -->
     <string name="nutrition_submit_button">Submit</string>
+    <string name="nutrition_commit_changes_button">Commit changes</string>
     <string name="add_nutrition_item_hint">Food Item</string>
     <string name="add_nutrition_calories_hint">Calories</string>
     <string name="add_nutrition_fat_hint">Total Fat (g)</string>
     <string name="add_nutrition_carbs_hint">Carbohydrates (g)</string>
-    <string name="blank_food_item_entry_warning">You cannot leave Food Item field empty.</string>
-    <string name="daily_calories_eaten">Daily Calories Eaten:</string>
+    <string name="edit_nutrition_blank_food_item_entry_warning">You cannot leave Food Item field empty.</string>
+    <string name="nutrition_daily_calories_eaten">Daily Calories Eaten:</string>
     <string name="nutrition_details_calories">Calories:</string>
     <string name="nutrition_details_fat">Total Fat:</string>
     <string name="nutrition_details_carbs">Total Carbohydrates:</string>
     <string name="nutrition_details_date">Added on</string>
+    <string name="nutrition_no_changes_toast">You have not changed any details, or have left the item field blank</string>
+    <string name="nutrition_wish_to_delete">Are you sure you want to delete this entry?</string>
+    <string name="nutrition_wish_to_delete_confirmation">Yes</string>
+    <string name="nutrition_wish_to_delete_rejection">Cancel</string>
+    <string name="nutrition_snackbar_add_entry">Nutrition entry added</string>
+    <string name="nutrition_snackbar_delete_entry">Nutrition entry deleted</string>
+    <string name="nutrition_snackbar_update_entry">Nutrition entry updated</string>
     <!-- End of Chris' strings -->
 
 

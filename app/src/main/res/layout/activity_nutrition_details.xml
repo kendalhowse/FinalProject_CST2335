@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.kendalsasus.finalproject_cst2335.nutrition.NutritionFragment"
-    android:id="@+id/nutrition_details_fragment">
+    android:id="@+id/nutrition_details_fragment"
+    android:background="@color/colorNutritionTrackerDark">
 
     <LinearLayout
         android:id="@+id/nutrition_details_layout"
@@ -19,31 +20,36 @@
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
             android:paddingLeft="10dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"/>
 
         <TextView
             android:id="@+id/nutrition_calories_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"/>
+            android:paddingLeft="10dp"
+            android:textColor="@color/colorPrimary"/>
 
         <TextView
             android:id="@+id/nutrition_fat_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"/>
+            android:paddingLeft="10dp"
+            android:textColor="@color/colorPrimary"/>
 
         <TextView
             android:id="@+id/nutrition_carbs_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"/>
+            android:paddingLeft="10dp"
+            android:textColor="@color/colorPrimary"/>
 
         <TextView
             android:id="@+id/nutrition_date_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"/>
+            android:paddingLeft="10dp"
+            android:textColor="@color/colorPrimary"/>
     </LinearLayout>
 
 

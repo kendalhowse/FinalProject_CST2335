@@ -13,11 +13,27 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/add_nutrition_item_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/add_nutrition_item_hint"
+            android:textStyle="bold"/>
+
         <EditText
             android:id="@+id/add_nutrition_item_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/add_nutrition_item_hint"/>
+
+        <TextView
+            android:id="@+id/add_nutrition_calories_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/add_nutrition_calories_hint"
+            android:textStyle="bold"/>
 
         <EditText
             android:id="@+id/add_nutrition_calories_edit_text"
@@ -26,12 +42,28 @@
             android:inputType="numberDecimal"
             android:hint="@string/add_nutrition_calories_hint"/>
 
+        <TextView
+            android:id="@+id/add_nutrition_fat_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/add_nutrition_fat_hint"
+            android:textStyle="bold"/>
+
         <EditText
             android:id="@+id/add_nutrition_fat_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:hint="@string/add_nutrition_fat_hint"/>
+
+        <TextView
+            android:id="@+id/add_nutrition_carbs_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/add_nutrition_carbs_hint"
+            android:textStyle="bold"/>
 
         <EditText
             android:id="@+id/add_nutrition_carbs_edit_text"
@@ -43,8 +75,7 @@
         <Button
             android:id="@+id/add_nutrition_entry_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/nutrition_submit_button"/>
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 </FrameLayout>

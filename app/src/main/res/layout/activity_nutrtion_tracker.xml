@@ -14,6 +14,12 @@
         android:layout_alignParentTop="true"
         android:layout_above="@id/nutrition_details_fragment"></ListView>
 
+    <ProgressBar
+        android:id="@+id/nutrition_progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" />
 
     <FrameLayout
         android:id="@+id/nutrition_details_fragment"
@@ -30,14 +36,16 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:textSize="15dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:background="@color/colorNutritionTrackerAccent"/>
 
     <LinearLayout
         android:id="@+id/nutrition_button_layout"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorNutritionTrackerAccent">
         <ImageButton
             android:id="@+id/nutrition_add_entry_button"
             android:layout_width="wrap_content"
@@ -49,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@android:drawable/ic_menu_delete" />
+            android:src="@android:drawable/ic_menu_delete"/>
         <ImageButton
             android:id="@+id/nutrition_edit_entry_button"
             android:layout_width="wrap_content"

@@ -1,15 +1,16 @@
 package com.example.kendalsasus.finalproject_cst2335.nutrition;
-
-
-
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +18,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.example.kendalsasus.finalproject_cst2335.DatabaseHelper;
 import com.example.kendalsasus.finalproject_cst2335.MainActivity;
 import com.example.kendalsasus.finalproject_cst2335.R;
-
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,7 +35,9 @@ public class NutritionTracker extends MainActivity {
     private ArrayList<Food> foods;
     private ListView foodList;
     private TextView tvTotalCalories;
-
+    private int selectedEntry;
+    private NutritionAdapter nutritionAdapter; // used to access ListView Adapter.
+    private String sortBy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,43 +50,84 @@ public class NutritionTracker extends MainActivity {
 
         // initialize ImageButtons relating to Add, Delete, and Edit.
         ImageButton nutritionAddEntryButton = findViewById(R.id.nutrition_add_entry_button);
-        ImageButton nutritionDeleteEntryButton = findViewById(R.id.nutrition_delete_entry_button);
-        ImageButton nutritionEditEntryButton = findViewById(R.id.nutrition_edit_entry_button);
+        final ImageButton nutritionDeleteEntryButton = findViewById(R.id.nutrition_delete_entry_button);
+        final ImageButton nutritionEditEntryButton = findViewById(R.id.nutrition_edit_entry_button);
         tvTotalCalories = findViewById(R.id.nutrition_total_calories_textView);
 
         nutritionAddEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // load the add_nutrition fragment if user clicks Add.
-                startActivityForResult(new Intent(NutritionTracker.this, AddNutritionEntry.class), 0);
+                Intent addIntent = new Intent(NutritionTracker.this, AddNutritionEntry.class);
+                Bundle info = new Bundle();
+                info.putInt("processCode", 10);
+                addIntent.putExtras(info);
+                startActivityForResult(addIntent, 0);
             }
         });
-
+        nutritionDeleteEntryButton.setEnabled(false); // disable delete button initially
         nutritionDeleteEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // delete from database if user clicks on Delete.
-                new NutritionQuery().execute("-1");
+                // do this if user clicks on Delete
+                warnUserOfDeletion();
             }
-
         });
-
+        nutritionEditEntryButton.setEnabled(false); // disable edit button initially
         nutritionEditEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // do this if user clicks on Edit.
+                startActivityForResult(prepareEditIntent(), 0);
             }
         });
-
         // run everytime, gets entries that have been sitting in database before app start.
         new NutritionQuery().execute("1");
 
         foodList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedEntry = i;
+                // now that entry is selected, enable delete and edit buttons
+                nutritionDeleteEntryButton.setEnabled(true);
+                nutritionEditEntryButton.setEnabled(true);
+                //foodList.smoothScrollToPosition(i);
                 inflateNutritionDetailsFragment(i);
             }
         });
+    }
+
+    private Intent prepareEditIntent() {
+        Intent editIntent = new Intent(NutritionTracker.this, AddNutritionEntry.class);
+        Food food = foods.get(selectedEntry);
+        Bundle fragmentInfo = new Bundle();
+        fragmentInfo.putInt("processCode", 11);
+        fragmentInfo.putString("item", food.getFoodItem());
+        fragmentInfo.putString("calories", String.valueOf(food.getCalories()));
+        fragmentInfo.putString("fat", String.valueOf(food.getFat()));
+        fragmentInfo.putString("carbohydrates", String.valueOf(food.getCarbohydrates()));
+        fragmentInfo.putInt("selectedEntry", selectedEntry);
+        editIntent.putExtras(fragmentInfo);
+        return editIntent;
+    }
+
+    // displays a dialog box confriming deletion of selected entry
+    private void warnUserOfDeletion() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(NutritionTracker.this);
+        builder.setTitle(getApplication().getString(R.string.nutrition_wish_to_delete))
+                .setPositiveButton(getApplication().getString(R.string.nutrition_wish_to_delete_confirmation), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // delete from database if user clicks on Delete.
+                        new NutritionQuery().execute("-10");
+                    }
+                })
+                .setNegativeButton(getApplication().getString(R.string.nutrition_wish_to_delete_rejection), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {}
+                })
+                .create()
+                .show();
     }
 
     // inflates a fragment showing the details of food item that use clicked on
@@ -116,7 +157,7 @@ public class NutritionTracker extends MainActivity {
                 totalCalories += food.getCalories();
             }
         }
-        tvTotalCalories.setText(getApplicationContext().getString(R.string.daily_calories_eaten) + " " + String.valueOf(totalCalories) + " g");
+        tvTotalCalories.setText(getApplicationContext().getString(R.string.nutrition_daily_calories_eaten) + " " + String.valueOf(totalCalories) + " g");
     }
 
     @Override
@@ -126,11 +167,17 @@ public class NutritionTracker extends MainActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if(resultCode == 10) {
-            NutritionQuery nutritionQuery = new NutritionQuery();
-            nutritionQuery.setBundle(data.getExtras());
-            nutritionQuery.execute(String.valueOf(resultCode));
+        switch(resultCode) {
+            case 10:
+                NutritionQuery nutritionQuery = new NutritionQuery();
+                nutritionQuery.setBundle(data.getExtras());
+                nutritionQuery.execute(String.valueOf(resultCode));
+                break;
+            case 11:
+                nutritionQuery = new NutritionQuery();
+                nutritionQuery.setBundle(data.getExtras());
+                nutritionQuery.execute(String.valueOf(resultCode));
+                break;
         }
     }
 
@@ -140,7 +187,7 @@ public class NutritionTracker extends MainActivity {
 
         private SQLiteDatabase database;
         private Cursor dbCursor;
-        private NutritionAdapter nutritionAdapter; // used to access ListView Adapter.
+        private ProgressBar progressBar;
         private int processCode;
         private Bundle info; // used to pass information accross objects and into database
 
@@ -150,6 +197,7 @@ public class NutritionTracker extends MainActivity {
             DatabaseHelper dbHelper = new DatabaseHelper(NutritionTracker.this);
             database = dbHelper.getWritableDatabase();
             dbCursor = nutritionTableQuery();
+            progressBar = findViewById(R.id.nutrition_progress_bar);
 
             processCode = 0;
             try {
@@ -157,44 +205,108 @@ public class NutritionTracker extends MainActivity {
             } catch(NumberFormatException e) {}
 
             // process code depends on what button user clicks
-            // 10 is if submit button is pressed in add_nutrition fragment
             switch (processCode) {
-                case 1 :
+                // user presses delete button
+                case -10:
+                    dbCursor.moveToPosition(selectedEntry);
+                    publishProgress(15);
+                    long id = dbCursor.getLong(dbCursor.getColumnIndex(DatabaseHelper.ID));
+                    publishProgress(40);
+                    removeFromDatabase(String.valueOf(id));
+                    publishProgress(60);
+                    dbCursor = nutritionTableQuery();
+                    publishProgress(80);
+                    foods.clear();
+                    publishProgress(90);
+                    loadPreFoods();
+                    publishProgress(100);
+                    break;
+                // activity is launched and previous set data is displayed
+                case 1:
                     loadPreFoods();
                     break;
-                case 10 :
-                    String item = info.getString("Item");
-                    double calories = info.getDouble("Calories");
-                    double fat = info.getDouble("Fat");
-                    double carbs = info.getDouble("Carbohydrates");
-                    long timestamp = info.getLong("Timestamp");
+                // submit button is pressed in add_nutrition fragment
+                case 10:
+                    String item = info.getString("item");
+                    double calories = info.getDouble("calories");
+                    double fat = info.getDouble("fat");
+                    double carbs = info.getDouble("carbohydrates");
+                    long timestamp = info.getLong("timestamp");
                     foods.add(new Food(item, calories, fat, carbs, timestamp));
+                    publishProgress(50);
                     writeToDatabase(item, calories, fat, carbs, timestamp);
+                    publishProgress(100);
+                    break;
+
+                case 11:
+                    dbCursor.moveToPosition(info.getInt("selectedEntry"));
+                    id = dbCursor.getLong(dbCursor.getColumnIndex(DatabaseHelper.ID));
+                    item = info.getString("item");
+                    calories = info.getDouble("calories");
+                    fat = info.getDouble("fat");
+                    carbs = info.getDouble("carbohydrates");
+                    updateDatabase(String.valueOf(id), item, calories, fat, carbs);
+                    publishProgress(25);
+                    dbCursor = nutritionTableQuery();
+                    publishProgress(50);
+                    foods.clear();
+                    publishProgress(75);
+                    loadPreFoods();
+                    publishProgress(100);
                     break;
             }
-
+            database.close();
             return "";
         }
 
         @Override
         protected void onProgressUpdate(Integer... args) {
 
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setProgress(args[0]);
         }
 
         // update views on GUI thread
         @Override
         protected void onPostExecute(String result) {
-            nutritionAdapter = new NutritionAdapter(NutritionTracker.this);
+
             switch (processCode) {
-                case 1 :
+                // user presses delete button
+                case -10:
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.nutrition_details_fragment, new NutritionFragment());
+                    transaction.commit();
+                    nutritionAdapter.notifyDataSetChanged();
+                    findViewById(R.id.nutrition_delete_entry_button).setEnabled(false);
+                    findViewById(R.id.nutrition_edit_entry_button).setEnabled(false);
+                    Snackbar.make(findViewById(R.id.nutrition_button_layout), getApplication().getString(R.string.nutrition_snackbar_delete_entry), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    break;
+                // activity is launched and previous set data is displayed
+                case 1:
+                    nutritionAdapter = new NutritionAdapter(NutritionTracker.this);
                     foodList.setAdapter(nutritionAdapter);
                     break;
-                case 10 :
+                // submit button is pressed in add_nutrition fragment
+                case 10:
                     nutritionAdapter.notifyDataSetChanged();
+                    Snackbar.make(findViewById(R.id.nutrition_button_layout), getApplication().getString(R.string.nutrition_snackbar_add_entry), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    break;
+                // commit changes button is pressed in add_nutrition fragment
+                case 11:
+                    transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.nutrition_details_fragment, new NutritionFragment());
+                    transaction.commit();
+                    nutritionAdapter.notifyDataSetChanged();
+                    findViewById(R.id.nutrition_delete_entry_button).setEnabled(false);
+                    findViewById(R.id.nutrition_edit_entry_button).setEnabled(false);
+                    Snackbar.make(findViewById(R.id.nutrition_button_layout), getApplication().getString(R.string.nutrition_snackbar_update_entry), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                     break;
             }
+            progressBar.setVisibility(View.INVISIBLE);
             setTotalCaloriesTextView();
-            database.close();
         }
 
         public void setBundle(Bundle bundle) {
@@ -202,10 +314,8 @@ public class NutritionTracker extends MainActivity {
         }
 
         private void loadPreFoods() {
-
             dbCursor.moveToFirst();
             while(!dbCursor.isAfterLast()) { // load up the foods ArrayList
-
                 foods.add(new Food(
                         dbCursor.getString(dbCursor.getColumnIndex(DatabaseHelper.NUTRITION_ITEM)),
                         dbCursor.getDouble(dbCursor.getColumnIndex(DatabaseHelper.NUTRITION_CALORIES)),
@@ -213,7 +323,6 @@ public class NutritionTracker extends MainActivity {
                         dbCursor.getDouble(dbCursor.getColumnIndex(DatabaseHelper.NUTRITION_CARBS)),
                         dbCursor.getLong(dbCursor.getColumnIndex(DatabaseHelper.NUTRITION_DATE))
                 ));
-
                 dbCursor.moveToNext();
             }
         }
@@ -238,7 +347,37 @@ public class NutritionTracker extends MainActivity {
             values.put(DatabaseHelper.NUTRITION_FAT, fat);
             values.put(DatabaseHelper.NUTRITION_CARBS, carbohydrates);
             values.put(DatabaseHelper.NUTRITION_DATE, timestamp);
-            database.insert(DatabaseHelper.NUTRITION_TABLE, "NULL MESSAGE", values);
+            try {
+                database.insert(DatabaseHelper.NUTRITION_TABLE, "NULL MESSAGE", values);
+                Log.i(ACTIVITY_NAME, "Entry successfully added to database.");
+            } catch (Exception e) {
+                Log.i(ACTIVITY_NAME, "Unable to add entry to database");
+                e.printStackTrace();
+            }
+        }
+
+        private void removeFromDatabase(String id) {
+            try {
+                database.execSQL("DELETE FROM " + DatabaseHelper.NUTRITION_TABLE + " WHERE " + DatabaseHelper.ID + " = " + id);
+                Log.i(ACTIVITY_NAME, "Entry has been successfully deleted.");
+            } catch (Exception e) {
+                Log.i(ACTIVITY_NAME, "Unable to delete from database.");
+                e.printStackTrace();
+            }
+        }
+
+        private void updateDatabase(String id, String item, double calories, double fat, double carbohydrates) {
+            ContentValues values = new ContentValues();
+            values.put(DatabaseHelper.NUTRITION_ITEM, item);
+            values.put(DatabaseHelper.NUTRITION_CALORIES, calories);
+            values.put(DatabaseHelper.NUTRITION_FAT, fat);
+            values.put(DatabaseHelper.NUTRITION_CARBS, carbohydrates);
+            try {
+                database.update(DatabaseHelper.NUTRITION_TABLE, values, DatabaseHelper.ID + " = " + id, null);
+                Log.i(ACTIVITY_NAME, "Successfully updated database.");
+            } catch (Exception e) {
+                Log.i(ACTIVITY_NAME, "Unable to update database.");
+            }
         }
     }
 // ================== CLASS NUTRITION QUERY END ==================================================================================================================================

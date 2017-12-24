@@ -14,6 +14,8 @@
 
     <color name="colorActivityTrackerBackground">#f7ffc1</color>
     <color name="colorNutritionTrackerBackground">#d8ffc7</color>
+    <color name="colorNutritionTrackerAccent">#8fcf73</color>
+    <color name="colorNutritionTrackerDark">#246807</color>
     <color name="colorThermostatBackground">#c9f1ff</color>
     <color name="colorAutomobileBackground">#ffb7b7</color>
 
