@@ -35,7 +35,6 @@ public class NutritionFragment extends Fragment {
         } catch(NullPointerException e) {}
 
         switch(processCode) {
-
             case 1:
                 nutritionFragmentView = inflater.inflate(R.layout.activity_nutrition_details, container, false);
                 showFoodDetails(nutritionFragmentView, passedInfo);
@@ -61,10 +60,11 @@ public class NutritionFragment extends Fragment {
             TextView carbDetails = layoutView.findViewById(R.id.nutrition_carbs_details);
             TextView dateDetails = layoutView.findViewById(R.id.nutrition_date_details);
             itemDetails.setText(info.getString("itemDetails"));
-            calorieDetails.setText(getActivity().getString(R.string.nutrition_details_calories) + " " + info.getString("calorieDetails") + " g");
-            fatDetails.setText(getActivity().getString(R.string.nutrition_details_fat) + " " + info.getString("fatDetails") + " g");
-            carbDetails.setText(getActivity().getString(R.string.nutrition_details_carbs) + " " + info.getString("carbDetails") + " g");
+            calorieDetails.setText(getActivity().getString(R.string.nutrition_details_calories) + " " + info.getString("calorieDetails"));
+            fatDetails.setText(getActivity().getString(R.string.nutrition_details_fat) + " " + info.getString("fatDetails"));
+            carbDetails.setText(getActivity().getString(R.string.nutrition_details_carbs) + " " + info.getString("carbDetails"));
             dateDetails.setText(getActivity().getString(R.string.nutrition_details_date) +  " " + info.getString("dateDetails"));
+
     }
 
     public void addNutritionEntry(final View layoutView) {
