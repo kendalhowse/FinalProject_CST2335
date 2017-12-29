@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MobileGraphics_FinalProject</string>
+    <string name="gasPurchased">Essance Acheté (L): </string>
+    <string name="cost">Prix: </string>
+    <string name="odometer">Odomèter: </string>
+    <string name="date">Date: </string>
+    <string name="authorText">Auteur: </string>
+    <string name="version">Version Numero: </string>
+    <string name="instructions">Instructions: </string>
+    <string name="avgPriceMonth">Prix Moyenne du Mois Dernier: </string>
+    <string name="avgLLastMonth">Litres Acheté du Mois Dernier: </string>
+    <string name="avgLPerMonth">Litres Acheté Par Mois</string>
+
+
+    <!-- Start of Chris' strings -->
+    <string name="nutrition_submit_button">Submit</string>
+    <string name="nutrition_commit_changes_button">Fait changé</string>
+    <string name="add_nutrition_item_hint">Substance Alimentaire</string>
+    <string name="add_nutrition_calories_hint">Calories</string>
+    <string name="add_nutrition_fat_hint">Gras Totale (g)</string>
+    <string name="add_nutrition_carbs_hint">Glucides (g)</string>
+    <string name="edit_nutrition_blank_food_item_entry_warning">Vous ne pouvez pas laisser Substance Alimentaire vide.</string>
+    <string name="nutrition_daily_calories_eaten">Calories Quotidien Totales:</string>
+    <string name="nutrition_daily_fat_eaten">Gras Quotidien Totales:</string>
+    <string name="nutrition_daily_carbs_eaten">Glucides Quotidien Totals:</string>
+    <string name="nutrition_details_calories">Calories:</string>
+    <string name="nutrition_details_fat">Gras Totales:</string>
+    <string name="nutrition_details_carbs">Glucides Totals:</string>
+    <string name="nutrition_details_date">Ajoutée:</string>
+    <string name="nutrition_no_changes_toast">Vous n\'avez pas changé sans détailes, ou vous avez laisser Substance Alimentaire vide</string>
+    <string name="nutrition_wish_to_delete">Etes vous certain que vous voulez effacer cette inscription?</string>
+    <string name="nutrition_wish_to_delete_confirmation">Oui</string>
+    <string name="nutrition_wish_to_delete_rejection">Annuler</string>
+    <string name="nutrition_snackbar_add_entry">Inscription alimentaire ajoutée</string>
+    <string name="nutrition_snackbar_delete_entry">Inscription alimentaire effacée</string>
+    <string name="nutrition_snackbar_update_entry">Inscription alimentaire actualisé</string>
+    <!-- End of Chris' strings -->
+
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+</resources>
