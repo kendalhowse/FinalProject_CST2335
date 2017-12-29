@@ -7,12 +7,46 @@
     android:background="@color/colorNutritionTrackerAccent"
     tools:context=".nutrition.NutritionTracker">
 
+    <LinearLayout
+        android:id="@+id/nutrition_daily_totals_pane"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:background="@color/toolbarColor">
+
+        <TextView
+            android:id="@+id/nutrition_total_calories_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/nutrition_total_fat_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/nutrition_total_carbs_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingBottom="5dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"/>
+    </LinearLayout>
+
     <ListView
         android:id="@+id/food_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/nutrition_details_fragment"></ListView>
+        android:layout_below="@id/nutrition_daily_totals_pane"></ListView>
 
     <ProgressBar
         android:id="@+id/nutrition_progress_bar"
@@ -25,20 +59,7 @@
         android:id="@+id/nutrition_details_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/nutrition_total_calories_textView"></FrameLayout>
-
-    <TextView
-        android:id="@+id/nutrition_total_calories_textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/nutrition_button_layout"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimary"
-        android:background="@color/colorNutritionTrackerDark"/>
+        android:layout_above="@id/nutrition_button_layout"></FrameLayout>
 
     <LinearLayout
         android:id="@+id/nutrition_button_layout"
@@ -46,7 +67,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorNutritionTrackerDark">
+        android:background="@color/toolbarColor">
         <ImageButton
             android:id="@+id/nutrition_add_entry_button"
             android:layout_width="wrap_content"

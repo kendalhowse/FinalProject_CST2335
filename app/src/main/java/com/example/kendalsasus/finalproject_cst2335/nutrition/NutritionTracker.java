@@ -22,8 +22,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.kendalsasus.finalproject_cst2335.DatabaseHelper;
 import com.example.kendalsasus.finalproject_cst2335.MainActivity;
+import com.example.kendalsasus.finalproject_cst2335.OnSwipeTouchListener;
 import com.example.kendalsasus.finalproject_cst2335.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,14 +40,17 @@ public class NutritionTracker extends MainActivity {
     private ArrayList<Food> foods;
     private ListView foodList;
     private TextView tvTotalCalories;
+    private TextView tvTotalFat;
+    private TextView tvTotalCarbs;
     private int selectedEntry;
     private NutritionAdapter nutritionAdapter; // used to access ListView Adapter.
-    private String sortBy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nutrtion_tracker);
+
+        inflateNutritionDetailsFragment(-1);
 
         // initialize ArrayList and ListView fields
         foods = new ArrayList<>();
@@ -55,6 +61,8 @@ public class NutritionTracker extends MainActivity {
         final ImageButton nutritionDeleteEntryButton = findViewById(R.id.nutrition_delete_entry_button);
         final ImageButton nutritionEditEntryButton = findViewById(R.id.nutrition_edit_entry_button);
         tvTotalCalories = findViewById(R.id.nutrition_total_calories_textView);
+        tvTotalFat = findViewById(R.id.nutrition_total_fat_textView);
+        tvTotalCarbs = findViewById(R.id.nutrition_total_carbs_textView);
 
         nutritionAddEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,32 +142,44 @@ public class NutritionTracker extends MainActivity {
 
     // inflates a fragment showing the details of food item that use clicked on
     private void inflateNutritionDetailsFragment(int i) {
-        if(!foods.isEmpty()) {
+        Bundle fragmentInfo = new Bundle();
+        fragmentInfo.putInt("processCode", 1);
+        try {
             Food food = foods.get(i);
-            Bundle fragmentInfo = new Bundle();
-            fragmentInfo.putInt("processCode", 1);
             fragmentInfo.putString("itemDetails", food.getFoodItem());
             fragmentInfo.putString("calorieDetails", String.valueOf(food.getCalories()));
-            fragmentInfo.putString("fatDetails", String.valueOf(food.getFat()));
-            fragmentInfo.putString("carbDetails", String.valueOf(food.getCarbohydrates()));
+            fragmentInfo.putString("fatDetails", String.valueOf(food.getFat()) + " g");
+            fragmentInfo.putString("carbDetails", String.valueOf(food.getCarbohydrates()) + " g");
             fragmentInfo.putString("dateDetails", food.getWordedDate());
-            NutritionFragment detailsFragment = new NutritionFragment();
-            detailsFragment.setArguments(fragmentInfo);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.nutrition_details_fragment, detailsFragment);
-            transaction.commit();
+        } catch(Exception e){
+            fragmentInfo.putString("itemDetails", "");
+            fragmentInfo.putString("calorieDetails", "");
+            fragmentInfo.putString("fatDetails", "");
+            fragmentInfo.putString("carbDetails", "");
+            fragmentInfo.putString("dateDetails", "");
         }
+        NutritionFragment detailsFragment = new NutritionFragment();
+        detailsFragment.setArguments(fragmentInfo);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.nutrition_details_fragment, detailsFragment);
+        transaction.commit();
     }
 
-    private void setTotalCaloriesTextView() {
+    private void setDailyTotals() {
         String currentDate = new SimpleDateFormat("MMddyyyy").format(new Date(System.currentTimeMillis()));
         double totalCalories = 0;
+        double totalFat = 0;
+        double totalCarbs = 0;
         for(Food food : foods) {
             if(food.getBasicDate().equals(currentDate)) {
                 totalCalories += food.getCalories();
+                totalFat += food.getFat();
+                totalCarbs += food.getCarbohydrates();
             }
         }
-        tvTotalCalories.setText(getApplicationContext().getString(R.string.nutrition_daily_calories_eaten) + " " + String.valueOf(totalCalories) + " g");
+        tvTotalCalories.setText(getApplicationContext().getString(R.string.nutrition_daily_calories_eaten) + " " + String.valueOf(totalCalories));
+        tvTotalFat.setText(getApplicationContext().getString(R.string.nutrition_daily_fat_eaten) + " " + String.valueOf(totalFat) + " g");
+        tvTotalCarbs.setText(getApplicationContext().getString(R.string.nutrition_daily_carbs_eaten) + " " + String.valueOf(totalFat) + " g");
     }
 
     @Override
@@ -260,6 +280,7 @@ public class NutritionTracker extends MainActivity {
                     break;
                 // activity is launched and previous set data is displayed
                 case 1:
+                    dbCursor = nutritionTableQuery();
                     loadPreFoods();
                     break;
                 // submit button is pressed in add_nutrition fragment
@@ -269,7 +290,7 @@ public class NutritionTracker extends MainActivity {
                     double fat = info.getDouble("fat");
                     double carbs = info.getDouble("carbohydrates");
                     long timestamp = info.getLong("timestamp");
-                    foods.add(new Food(item, calories, fat, carbs, timestamp));
+                    foods.add(0, new Food(item, calories, fat, carbs, timestamp));
                     publishProgress(50);
                     writeToDatabase(item, calories, fat, carbs, timestamp);
                     publishProgress(100);
@@ -316,6 +337,7 @@ public class NutritionTracker extends MainActivity {
                     nutritionAdapter.notifyDataSetChanged();
                     findViewById(R.id.nutrition_delete_entry_button).setEnabled(false);
                     findViewById(R.id.nutrition_edit_entry_button).setEnabled(false);
+                    inflateNutritionDetailsFragment(-1);
                     Snackbar.make(findViewById(R.id.nutrition_button_layout), getApplication().getString(R.string.nutrition_snackbar_delete_entry), Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     break;
@@ -327,6 +349,9 @@ public class NutritionTracker extends MainActivity {
                 // submit button is pressed in add_nutrition fragment
                 case 10:
                     nutritionAdapter.notifyDataSetChanged();
+                    findViewById(R.id.nutrition_delete_entry_button).setEnabled(false);
+                    findViewById(R.id.nutrition_edit_entry_button).setEnabled(false);
+                    inflateNutritionDetailsFragment(-1);
                     Snackbar.make(findViewById(R.id.nutrition_button_layout), getApplication().getString(R.string.nutrition_snackbar_add_entry), Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     break;
@@ -343,7 +368,7 @@ public class NutritionTracker extends MainActivity {
                     break;
             }
             progressBar.setVisibility(View.INVISIBLE);
-            setTotalCaloriesTextView();
+            setDailyTotals();
         }
 
         public void setBundle(Bundle bundle) {
@@ -373,7 +398,7 @@ public class NutritionTracker extends MainActivity {
                             DatabaseHelper.NUTRITION_FAT,
                             DatabaseHelper.NUTRITION_CARBS,
                             DatabaseHelper.NUTRITION_DATE},
-                    null, null, null, null, null);
+                    null, null, null, null, DatabaseHelper.NUTRITION_DATE + " DESC");
         }
 
         // adds an entry to Nutrition table in the database

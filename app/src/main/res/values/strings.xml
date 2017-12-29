@@ -20,11 +20,13 @@
     <string name="add_nutrition_fat_hint">Total Fat (g)</string>
     <string name="add_nutrition_carbs_hint">Carbohydrates (g)</string>
     <string name="edit_nutrition_blank_food_item_entry_warning">You cannot leave Food Item field empty.</string>
-    <string name="nutrition_daily_calories_eaten">Daily Calories Eaten:</string>
+    <string name="nutrition_daily_calories_eaten">Total Daily Calories:</string>
+    <string name="nutrition_daily_fat_eaten">Total Daily Fat:</string>
+    <string name="nutrition_daily_carbs_eaten">Total Daily Carbohydrates:</string>
     <string name="nutrition_details_calories">Calories:</string>
     <string name="nutrition_details_fat">Total Fat:</string>
     <string name="nutrition_details_carbs">Total Carbohydrates:</string>
-    <string name="nutrition_details_date">Added on</string>
+    <string name="nutrition_details_date">Added on:</string>
     <string name="nutrition_no_changes_toast">You have not changed any details, or have left the item field blank</string>
     <string name="nutrition_wish_to_delete">Are you sure you want to delete this entry?</string>
     <string name="nutrition_wish_to_delete_confirmation">Yes</string>
