@@ -36,6 +36,16 @@
     <string name="nutrition_snackbar_update_entry">Nutrition entry updated</string>
     <!-- End of Chris' strings -->
 
+    <!-- Activity Strings -->
+    <string-array name="activity_types">
+        <item>Running</item>
+        <item>Walking</item>
+        <item>Biking</item>
+        <item>Swimming</item>
+        <item>Skating</item>
+    </string-array>
+    <!-- End of Activity Strings -->
+
 
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_main2">Main2Activity</string>

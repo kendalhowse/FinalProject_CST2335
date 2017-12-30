@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorActivityTrackerBackground"
+    android:id="@+id/activity_frame_layout">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        //this should be a pull down instead!
+
+
+        <Spinner
+            android:id="@+id/activityType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/activity_types"/>
+
+        <EditText
+            android:id="@+id/activityDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:hint="Activity Duration"/>
+
+        <EditText
+            android:id="@+id/activityComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Comments"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/submitBtn"
+            android:text="Submit Entry"
+            android:layout_alignParentBottom="true" />
+
+    </LinearLayout>
+
+</FrameLayout>

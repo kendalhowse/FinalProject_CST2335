@@ -1,8 +1,11 @@
 package com.example.kendalsasus.finalproject_cst2335;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,23 +41,22 @@ public class ActivityTracker extends MainActivity {
     ImageButton addBtn;
     ImageButton deleteBtn;
     ImageButton editBtn;
-    ArrayList<String> msgs = new ArrayList<>(); //tmp will change this
-    DatabaseHelper dh;
-    Cursor results;
+    ArrayList<Activity> activityArray = new ArrayList<>(); //arraylist of Activities
+
 
     //chat adaptor
-    private class ChatAdapter extends ArrayAdapter<String> {
-        public ChatAdapter (Context ctx){
+    private class ActivityAdapter extends ArrayAdapter<Activity> {
+        public ActivityAdapter (Context ctx){
             super(ctx, 0);
         }
 
         //returns number of lines in chat listview
         public int getCount(){
-            return msgs.size();
+            return activityArray.size();
         }
 
-        public String getItem(int position){
-            return msgs.get(position);
+        public Activity getItem(int position){
+            return activityArray.get(position);
         }
 
         public View getView(int position, View convertView, ViewGroup parent){
@@ -77,7 +79,46 @@ public class ActivityTracker extends MainActivity {
         deleteBtn = findViewById(R.id.activity_button_delete);
         editBtn = findViewById(R.id.activity_button_edit);
 
+        //working with the databse - view activities existing in the database within the ListView
+
+        //in this case, “this” is the ActivityList, which is-A Context object
+        final ActivityAdapter messageAdapter = new ActivityAdapter(this);
+        activityList.setAdapter(messageAdapter);
+
+
+        //resets the iteration of results
+//        results.moveToFirst();
+        //log the message retrieved and column count
+//        while(!results.isAfterLast()){
+//            Log.i(ACTIVITY_NAME, "SQL MESSAGE: " + results.getString(results.getColumnIndex( ChatDatabaseHelper.KEY_MESSAGE)));
+//            Log.i(ACTIVITY_NAME, "Cursor's column count = " + results.getColumnCount());
+//            results.moveToNext();
+//        }
+
+        //print out the name of each column in the table
+//        for (int i = 0; i < results.getColumnCount(); i++) {
+//            System.out.println(results.getColumnName(i));
+//
+//
+//            addBtn.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View v) {
+//                    //Create new row data
+//                    ContentValues newData = new ContentValues();
+////            newData.put(DatabaseHelper.ACTIVITY_TYPE, activityType.getText().toString());
+//
+//                    //Then insert
+//                    db.insert(DatabaseHelper.ACTIVITY_TABLE, "", newData);
+//
+////            msgs.add(text.getText().toString());
+//                    messageAdapter.notifyDataSetChanged(); //this restarts the process of getCount()/getView()
+////            text.setText("");
+//
+//                }
+//            });
+//        }
     }
+
+
 
     //clicking the help menu item
     @Override
@@ -120,6 +161,122 @@ public class ActivityTracker extends MainActivity {
             builder.show();
         }
         return true;
+    }
+
+    // Connecting to Database
+    public class DatabaseSetup extends AsyncTask<String, Integer, String>
+    {
+        SQLiteDatabase db;
+
+        @Override
+        protected String doInBackground(String... args)
+        {
+            DatabaseHelper dh = new DatabaseHelper(ActivityTracker.this);
+            //create a local variable for the SQLite database
+            db = dh.getWritableDatabase();
+
+            //query for results from db (ID, Type, Duration, Date, Comment)
+            Cursor results = activityQuery();
+
+            //resets the iteration of results
+            results.moveToFirst();
+
+            //How many rows in the results:
+            int numResults = results.getCount();
+
+            int messageIndex = results.getColumnIndex(DatabaseHelper.ACTIVITY_TYPE);
+
+            for (int i= 0; i < numResults; i++){
+                activityArray.add(new Activity(
+                        results.getString(results.getColumnIndex(DatabaseHelper.ACTIVITY_TYPE)),
+                        results.getInt(results.getColumnIndex(DatabaseHelper.ACTIVITY_DURATION)),
+                        results.getString(results.getColumnIndex(DatabaseHelper.ACTIVITY_DATE)),
+                        results.getString(results.getColumnIndex(DatabaseHelper.ACTIVITY_COMMENT))
+                ));
+                results.moveToNext();
+            }
+
+            db.close();
+            return "";
+        }
+
+
+        @Override
+        protected void onProgressUpdate(Integer... args)
+        {
+            //fill this out
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            //fill this out
+        }
+
+        // get results for content of Activity Databse
+        private Cursor activityQuery() {
+            return db.query(DatabaseHelper.ACTIVITY_TABLE,
+                    new String[]{DatabaseHelper.ID, DatabaseHelper.ACTIVITY_TYPE, DatabaseHelper.ACTIVITY_DURATION, DatabaseHelper.ACTIVITY_DATE, DatabaseHelper.ACTIVITY_COMMENT},
+                    null, null, null, null, DatabaseHelper.ACTIVITY_DATE + " DESC");
+        }
+
+
+    }
+
+    //Data class for activities in database
+    public class Activity {
+
+        private String type;
+        private int duration;
+        private String date;
+        private String comment;
+
+        public Activity (){
+            type = "";
+            duration = 0;
+            date = "";
+            comment = "";
+        }
+
+        public Activity (String type, int duration, String date, String comment){
+            this.type = type;
+            this.duration = duration;
+            this.date = date;
+            this.comment = comment;
+        }
+
+        public String getType(){
+            return type;
+        }
+
+        public void setType(String type){
+            this.type = type;
+        }
+
+        public int getDuration(){
+            return duration;
+        }
+
+        public void setDuration(int duration){
+            this.duration = duration;
+        }
+
+        public String getDate(){
+            return date;
+        }
+
+        public void setDate(String date){
+            this.date = date;
+        }
+
+        public String getComment(){
+            return comment;
+        }
+
+        public void setComment(String comment){
+            this.comment = comment;
+        }
+
     }
 
 }
