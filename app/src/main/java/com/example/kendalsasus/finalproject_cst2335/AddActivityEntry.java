@@ -10,8 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 
 public class AddActivityEntry extends AppCompatActivity {
 
-    boolean layout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

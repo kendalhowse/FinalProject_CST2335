@@ -3,6 +3,7 @@ package com.example.kendalsasus.finalproject_cst2335;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -86,36 +87,16 @@ public class ActivityTracker extends MainActivity {
         activityList.setAdapter(messageAdapter);
 
 
-        //resets the iteration of results
-//        results.moveToFirst();
-        //log the message retrieved and column count
-//        while(!results.isAfterLast()){
-//            Log.i(ACTIVITY_NAME, "SQL MESSAGE: " + results.getString(results.getColumnIndex( ChatDatabaseHelper.KEY_MESSAGE)));
-//            Log.i(ACTIVITY_NAME, "Cursor's column count = " + results.getColumnCount());
-//            results.moveToNext();
-//        }
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //start the MessageDetails class
+                Intent intent = new Intent(ActivityTracker.this, AddActivityEntry.class);
+                //can use putExtras if needed to pass info to AddActivityEntry class
+//                intent.putExtras(b);
+                startActivityForResult(intent, 10);
 
-        //print out the name of each column in the table
-//        for (int i = 0; i < results.getColumnCount(); i++) {
-//            System.out.println(results.getColumnName(i));
-//
-//
-//            addBtn.setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View v) {
-//                    //Create new row data
-//                    ContentValues newData = new ContentValues();
-////            newData.put(DatabaseHelper.ACTIVITY_TYPE, activityType.getText().toString());
-//
-//                    //Then insert
-//                    db.insert(DatabaseHelper.ACTIVITY_TABLE, "", newData);
-//
-////            msgs.add(text.getText().toString());
-//                    messageAdapter.notifyDataSetChanged(); //this restarts the process of getCount()/getView()
-////            text.setText("");
-//
-//                }
-//            });
-//        }
+            }
+        });
     }
 
 

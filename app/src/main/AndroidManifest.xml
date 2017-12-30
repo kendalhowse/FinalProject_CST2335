@@ -21,6 +21,7 @@
         <activity android:name=".Thermostat" />
         <activity android:name=".AddGasEntry" />
         <activity android:name=".nutrition.AddNutritionEntry" />
+        <activity android:name=".AddActivityEntry" />
     </application>
 
 </manifest>
