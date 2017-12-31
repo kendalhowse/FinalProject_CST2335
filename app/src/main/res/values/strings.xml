@@ -36,6 +36,14 @@
     <string name="nutrition_snackbar_update_entry">Nutrition entry updated</string>
     <!-- End of Chris' strings -->
 
+    <!-- Thermostat Strings -->
+    <string name="themostat_day_TV">Day of the Week: </string>
+    <string name="themostat_hour_TV">Hour: </string>
+    <string name="themostat_temp_TV">Temperature: </string>
+    <string name="degrees"> 15 oC </string>
+
+    <!-- End of Thermostat Strings -->
+
     <!-- Activity Strings -->
     <string-array name="activity_types">
         <item>Running</item>
