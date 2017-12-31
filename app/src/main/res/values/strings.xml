@@ -42,6 +42,11 @@
     <string name="themostat_temp_TV">Temperature: </string>
     <string name="degrees"> 15 oC </string>
 
+
+    <string name="btn_delete">delete</string>
+    <string name="btn_add">add</string>
+    <string name="btn_edit">edit</string>
+    btn_delete
     <!-- End of Thermostat Strings -->
 
     <!-- Activity Strings -->
