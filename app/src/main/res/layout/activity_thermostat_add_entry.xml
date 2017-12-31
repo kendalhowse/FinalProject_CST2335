@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/colorThermostatBackground">
 
+
+    <TextView
+        android:id="@+id/ThermostatAddEntryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/ThermostatAddEntryTitle"
+        android:textSize="20sp"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <GridLayout
-        android:layout_width="387dp"
-        android:layout_height="281dp"
+        android:id="@+id/griddy"
+        android:layout_width="384dp"
+        android:layout_height="116dp"
+        android:layout_marginTop="72dp"
         android:columnCount="2"
         android:rowCount="4"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteY="75dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:layout_width="139dp"
@@ -21,45 +35,89 @@
             android:gravity="end"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:text="@string/themostat_day_TV" />
+            android:text="@string/thermostat_day_TV" />
 
         <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="217dp"
-            android:layout_height="wrap_content" />
+            android:id="@+id/dayOfTheWeekSpinner"
+            android:layout_width="141dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/days_of_the_week"
+            android:textAlignment="center" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/thermostat_hour_TV"
             android:layout_width="139dp"
             android:layout_height="wrap_content"
             android:gravity="end"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:text="@string/themostat_hour_TV" />
-
-        <Spinner
-            android:id="@+id/spinner2"
-            android:layout_width="216dp"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="139dp"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:text="@string/themostat_temp_TV" />
+            android:text="@string/thermostat_hour_TV" />
 
         <EditText
-            android:id="@+id/editText2"
-            android:layout_width="wrap_content"
+            android:id="@+id/thermostat_hour_ET"
+            android:layout_width="141dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/hour_ET"
+            android:inputType="time"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/thermostat_temp_TV"
+            android:layout_width="139dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="@string/thermostat_temp_TV" />
+
+        <EditText
+            android:id="@+id/thermostat_temp_ET"
+            android:layout_width="141dp"
             android:layout_height="wrap_content"
             android:layout_column="1"
             android:layout_row="2"
             android:ems="10"
             android:hint="@string/degrees"
-            android:inputType="textPersonName" />
+            android:inputType="numberDecimal|numberSigned"
+            android:textAlignment="center"
+            tools:layout_editor_absoluteX="246dp"
+            tools:layout_editor_absoluteY="70dp" />
 
     </GridLayout>
+
+    <Button
+        android:id="@+id/submitBTN"
+        android:layout_width="220dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/thermostat_SubmitNew"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/griddy"
+        android:textColor="@color/colorPrimary"
+        android:backgroundTint="@color/btnBack"/>
+
+    <Button
+        android:id="@+id/editBTN"
+        android:layout_width="220dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/thermostat_SubmitNotNew"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/submitBTN"
+        android:textColor="@color/colorPrimary"
+        android:backgroundTint="@color/btnBack"/>
+
+    <TextView
+        android:id="@+id/degreesC"
+        android:layout_width="102dp"
+        android:layout_height="30dp"
+        android:text="@string/degreesC"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/griddy"
+        app:layout_constraintRight_toRightOf="@id/griddy" />
+
+
 </android.support.constraint.ConstraintLayout>
