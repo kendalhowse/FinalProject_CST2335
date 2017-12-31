@@ -19,5 +19,7 @@
     <color name="colorThermostatBackground">#c9f1ff</color>
     <color name="colorAutomobileBackground">#ffb7b7</color>
 
+    <color name="btnBack">#0065b3</color>
+
     <color name="toolbarColor">#000000</color>
 </resources>

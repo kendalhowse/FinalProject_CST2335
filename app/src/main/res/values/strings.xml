@@ -37,11 +37,26 @@
     <!-- End of Chris' strings -->
 
     <!-- Thermostat Strings -->
-    <string name="themostat_day_TV">Day of the Week: </string>
-    <string name="themostat_hour_TV">Hour: </string>
-    <string name="themostat_temp_TV">Temperature: </string>
-    <string name="degrees"> 15 oC </string>
+    <string name="thermostat_day_TV">Day of the Week: </string>
+    <string name="thermostat_hour_TV">Hour (24hr): </string>
+    <string name="thermostat_temp_TV">Temperature: </string>
+    <string name="degrees"> -15 </string>
+    <string name="degreesC"> °C </string>
+    <string name="hour_ET"> 12:00 </string>
+    <string name="thermostat_SubmitNew"> Submit as New </string>
+    <string name="thermostat_SubmitNotNew"> Update Existing </string>
+    <string name="ThermostatAddEntryTitle"> Create New Thermostat Setting </string>
 
+
+    <string-array name="days_of_the_week">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
 
     <string name="btn_delete">delete</string>
     <string name="btn_add">add</string>
