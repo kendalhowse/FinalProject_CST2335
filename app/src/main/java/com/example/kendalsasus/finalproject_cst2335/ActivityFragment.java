@@ -82,11 +82,14 @@ public class ActivityFragment extends Fragment {
                 extras.putString("activityComment", commentValue);
                 extras.putString("activityDate", stringDate);
                 intent.putExtras(extras);
-                startActivity(intent);
+                getActivity().setResult(10, intent);
+                getActivity().finish();
+//                startActivity(intent);
                 Log.i("ActivityFragment", "Activity Type: " + activityTypeValue);
                 Log.i("ActivityFragment", "Activity Duration: " + durationValue);
                 Log.i("ActivityFragment", "Activity Comment: " + commentValue);
                 Log.i("ActivityFragment", "Activity Date: " + stringDate);
+
             }
         });
         return frame;
