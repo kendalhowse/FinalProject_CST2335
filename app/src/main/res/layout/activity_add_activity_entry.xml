@@ -10,9 +10,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        //this should be a pull down instead!
-
-
         <Spinner
             android:id="@+id/activityType"
             android:layout_width="match_parent"

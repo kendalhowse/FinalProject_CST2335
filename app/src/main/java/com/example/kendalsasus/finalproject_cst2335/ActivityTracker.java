@@ -1,6 +1,5 @@
 package com.example.kendalsasus.finalproject_cst2335;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,18 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 
-//enter activities:
-// Activity label - pull down with 5 options (Running, Walking, Biking, Swimming, Skating)
-// Time label - enter amount of time using textview (x2) - have selection for minutes and hours
-// Comment label - textview to enter comment
-// current time attribute - enter into dB too
-
-//have a listview to show activities previously entered (my activity history) - use fragment - selecting item by date shows details in fragment
-// should be able to delete or edit past entries and commit back to the dB
-// monthly statistics
-
-// *progress bar, button, edittext, toast, snackbar, dialog, help menu item, support one other language (French - will make another strings.xml at the end)
-
 
 public class ActivityTracker extends MainActivity {
 
@@ -43,6 +30,7 @@ public class ActivityTracker extends MainActivity {
     ImageButton deleteBtn;
     ImageButton editBtn;
     ArrayList<Activity> activityArray = new ArrayList<>(); //arraylist of Activities
+    DatabaseSetup ds;
 
 
     //chat adaptor
@@ -81,6 +69,8 @@ public class ActivityTracker extends MainActivity {
         editBtn = findViewById(R.id.activity_button_edit);
 
         //working with the databse - view activities existing in the database within the ListView
+        ds = new DatabaseSetup();
+        ds.execute("1");
 
         //in this case, “this” is the ActivityList, which is-A Context object
         final ActivityAdapter messageAdapter = new ActivityAdapter(this);
