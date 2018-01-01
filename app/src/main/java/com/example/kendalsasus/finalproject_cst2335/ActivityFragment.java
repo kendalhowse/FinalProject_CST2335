@@ -91,6 +91,9 @@ public class ActivityFragment extends Fragment {
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+                int resultCode = 10;
+
                 activityTypeValue = activity.getSelectedItem().toString();
                 durationValue = duration.getText().toString();
                 commentValue = comments.getText().toString();
@@ -104,13 +107,27 @@ public class ActivityFragment extends Fragment {
                 extras.putString("activityDuration", durationValue);
                 extras.putString("activityComment", commentValue);
                 extras.putString("activityDate", stringDate);
-                intent.putExtras(extras);
-                getActivity().setResult(10, intent);
-                getActivity().finish();
+
+                //if this was an edit...
+                if (requestCode == 20){
+                    resultCode = 20;
+                    extras.putLong("activityID", editId);
+                    intent.putExtras(extras);
+                    getActivity().setResult(resultCode, intent);
+                    getActivity().finish();
+                } else {
+
+                    intent.putExtras(extras);
+                    getActivity().setResult(resultCode, intent);
+                    getActivity().finish();
+                }
+
+
                 Log.i("ActivityFragment", "Activity Type: " + activityTypeValue);
                 Log.i("ActivityFragment", "Activity Duration: " + durationValue);
                 Log.i("ActivityFragment", "Activity Comment: " + commentValue);
                 Log.i("ActivityFragment", "Activity Date: " + stringDate);
+                Log.i("ActivityFragment", "Result Code: " + resultCode);
 
             }
         });

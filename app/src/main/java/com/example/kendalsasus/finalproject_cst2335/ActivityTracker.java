@@ -246,6 +246,9 @@ public class ActivityTracker extends MainActivity {
         String date;
         int intDuration;
 
+        long id;
+
+
         @Override
         protected String doInBackground(String... args)
         {
@@ -268,11 +271,12 @@ public class ActivityTracker extends MainActivity {
 
             switch (caseNumber) {
                 case 1:
-                    Log.i("ActivityTracker", "In doInBackground CASE 1");
+                    Log.i("ActivityTracker", "In doInBackground Case 1");
                     updateListView();
                     break;
                 case 10:
-                    Log.i("ActivityTracker", "In doInBackground CASE 10");
+                    //add entry
+                    Log.i("ActivityTracker", "In doInBackground Case 10");
                     activity = bundle.getString("activityType");
                     duration = bundle.getString("activityDuration");
                     try {
@@ -283,15 +287,31 @@ public class ActivityTracker extends MainActivity {
                     comment = bundle.getString("activityComment");
                     date = bundle.getString("activityDate");
 
-                    ds.updateActivityDB(activity, intDuration, date, comment);
+                    ds.addActivityDB(activity, intDuration, date, comment);
                     Log.i("ActivityTracker", "Got new Activity data from bundle");
                     results.moveToLast();
 
                     activityArray.add(new Activity(activity, intDuration, date, comment));
 
-//                    updateListView();
+                    break;
+                case 20:
+                    Log.i("ActivityTracker", "In doInBackground Case 20");
+                    //update existing entry
+                    id = bundle.getLong("activityID");
+                    activity = bundle.getString("activityType");
+                    duration = bundle.getString("activityDuration");
+                    try {
+                        intDuration = Integer.parseInt(duration);
+                    } catch (NumberFormatException nfe){
+                        intDuration = 1;
+                    }
+                    comment = bundle.getString("activityComment");
+                    date = bundle.getString("activityDate");
+                    ds.updateExistingActivity(id, activity, intDuration, date, comment);
+
                     break;
                 }
+
             return "";
         }
 
@@ -316,7 +336,8 @@ public class ActivityTracker extends MainActivity {
                     null, null, null, null, DatabaseHelper.ACTIVITY_DATE + " DESC");
         }
 
-        public void updateActivityDB(String type, int duration, String date, String comment){
+        //add new activity
+        public void addActivityDB(String type, int duration, String date, String comment){
             //Create new row data
             ContentValues newData = new ContentValues();
             newData.put(DatabaseHelper.ACTIVITY_TYPE, type);
@@ -327,6 +348,23 @@ public class ActivityTracker extends MainActivity {
             //Then insert
             db.insert(DatabaseHelper.ACTIVITY_TABLE, "" , newData);
         }
+
+        public void updateExistingActivity(long id, String type, int duration, String date, String comment){
+            String updateSQL = "UPDATE " + DatabaseHelper.ACTIVITY_TABLE +
+                    " SET " +
+                    DatabaseHelper.ACTIVITY_TYPE + " = '" + type + "', " +
+                    DatabaseHelper.ACTIVITY_DURATION + " = " + duration + ", " +
+                    DatabaseHelper.ACTIVITY_DATE + " = '" + date + "', " +
+                    DatabaseHelper.ACTIVITY_COMMENT + " = '" + comment +
+                    "' WHERE " +
+                    DatabaseHelper.ID + " = '" + id + "'";
+            db.execSQL(updateSQL);
+            //update array list too..
+            int integerId = (int) id;
+            activityArray.set(integerId, new Activity(type, duration, date, comment));
+            adapter.notifyDataSetChanged();
+        }
+
 
         public void updateListView(){
             //resets the iteration of results
