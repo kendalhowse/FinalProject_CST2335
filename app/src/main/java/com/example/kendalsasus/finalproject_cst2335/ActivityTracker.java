@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +38,7 @@ public class ActivityTracker extends MainActivity {
     ArrayList<Activity> activityArray = new ArrayList<>(); //arraylist of Activities
     DatabaseSetup ds;
     ActivityAdapter adapter;
+    public int requestCode;
 
 
     //activity adaptor to display activities in list view
@@ -98,6 +100,12 @@ public class ActivityTracker extends MainActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
+                final String activity = activityArray.get(position).getType().toString();
+                final String comment = activityArray.get(position).getComment().toString();
+                final String duration = String.valueOf(activityArray.get(position).getDuration());
+                final long currentID = id;
+
+
                 // delete selected entry from list
                 deleteBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -111,13 +119,16 @@ public class ActivityTracker extends MainActivity {
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User clicked OK button
-                                //delete the item from the database - create method
+                                ds.deleteActivity(position);
+                                Snackbar.make(findViewById(R.id.activity_list), "You deleted " + activity,
+                                        Snackbar.LENGTH_SHORT)
+                                        .show();
                             }
                         });
                         builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User cancelled the dialog
-                                //do nothing but go back to list
+                                //do nothing but go back to activity list
                             }
                         });
                         // Create the AlertDialog
@@ -131,6 +142,18 @@ public class ActivityTracker extends MainActivity {
                     @Override
                     public void onClick(View v) {
                         //go back to the add fragment and use result code to modify the current list item
+                        //start the AddActivityEntry class
+                        requestCode = 20;
+                        Bundle activityBundle = new Bundle();
+                        activityBundle.putLong("ID", currentID);
+                        activityBundle.putString("Type", activity);
+                        activityBundle.putString("Duration", duration);
+                        activityBundle.putString("Comment", comment);
+                        activityBundle.putInt("RequestCode", requestCode);
+
+                        Intent intent = new Intent(ActivityTracker.this, AddActivityEntry.class);
+                        intent.putExtras(activityBundle);
+                        startActivityForResult(intent, requestCode);
                     }
                 });
             }
@@ -321,6 +344,12 @@ public class ActivityTracker extends MainActivity {
                 ));
                 results.moveToNext();
             }
+        }
+
+        public void deleteActivity(int position){
+            db.delete(DatabaseHelper.ACTIVITY_TABLE, DatabaseHelper.ACTIVITY_DATE + "= '" + activityArray.get(position).getDate() + "'" , null);
+            activityArray.remove(position);
+            adapter.notifyDataSetChanged();
         }
 
         public void setBundle(Bundle bundle) {

@@ -32,6 +32,12 @@ public class ActivityFragment extends Fragment {
     String commentValue;
     String stringDate;
 
+    String editActivity;
+    String editDuration;
+    String editComment;
+    long editId;
+    int requestCode;
+
     ActivityTracker newActivity;
 
     //default constructor
@@ -52,6 +58,19 @@ public class ActivityFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
+        Bundle edit = getArguments();
+//        requestCode = 0;
+
+        if (edit != null){
+            editId = edit.getLong("ID");
+            editActivity = edit.getString("Type");
+            editDuration = edit.getString("Duration");
+            editComment = edit.getString("Comment");
+            requestCode = edit.getInt("RequestCode");
+        }
+
+        Log.i("ActivityFragment", "Activity to edit = " + editActivity);
+
     }
 
 
@@ -64,6 +83,10 @@ public class ActivityFragment extends Fragment {
         duration = (EditText) frame.findViewById(R.id.activityDuration);
         comments = (EditText) frame.findViewById(R.id.activityComments);
         submitBtn = (Button) frame.findViewById(R.id.submitBtn);
+
+        if (requestCode == 20){
+            setEditValues();
+        }
 
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
@@ -93,4 +116,27 @@ public class ActivityFragment extends Fragment {
         });
         return frame;
     }
+
+    public void setEditValues(){
+        int activitySelection = 0;
+
+        //check which activity it is
+        if (editActivity.equals("Running")){
+            activitySelection = 0;
+        } else if (editActivity.equals("Walking")) {
+            activitySelection = 1;
+        } else if (editActivity.equals("Biking")) {
+            activitySelection = 2;
+        } else if (editActivity.equals("Swimming")) {
+            activitySelection = 3;
+        } else {
+            activitySelection = 4;
+        }
+
+        //set all fields as they were to be edited
+        activity.setSelection(activitySelection);
+        duration.setText(editDuration);
+        comments.setText(editComment);
+    }
+
 }
