@@ -43,7 +43,7 @@ public class Thermostat extends MainActivity {
     public String ACTIVITY_NAME = "Thermostat";
 
 
-    //====================== Thermostat Adapter Class Start =============================//
+    //====================== Thermostat Adapter Class Start =================================//
 
     private class ThermostatAdapter extends ArrayAdapter<ThermostatSetting> {
 
@@ -64,18 +64,16 @@ public class Thermostat extends MainActivity {
             LayoutInflater inflater = Thermostat.this.getLayoutInflater();
             View result = inflater.inflate(R.layout.list_row, null);
             TextView thermostatEntered = result.findViewById(R.id.row_entry);
-            thermostatEntered.setText(getItem(position).getDay() + " " + getItem(position).getHour() + " set Temp to: " + getItem(position).getTemp() + "°C");
-            TextView foodDate = result.findViewById(R.id.row_sub_entry);
-            foodDate.setText("Date created: " + getItem(position).getDate());
+            thermostatEntered.setText(getItem(position).getDay() + " @ " + getItem(position).getHour() + " --> " + getItem(position).getTemp() + "°C");
             return result;
         }
         //return ID of selected ThermostatSetting
         public long getItemId(int position){ return thermostatDBC.idbyPos(position); }
     }
 
-    //====================== Thermostat Adapter Class End ==============================//
+    //====================== Thermostat Adapter Class End ==================================//
 
-    //====================== Thermostat Class Continue ================================//
+    //====================== Thermostat Class Continue ====================================//
 
     //default constructor
     public Thermostat(){}
@@ -119,6 +117,9 @@ public class Thermostat extends MainActivity {
                 final ThermostatSetting ts = thermostatArrayList.get(position); //selected listview item
 
                 // once an item is selected...
+
+                //Show detailed info at bottom of the screen
+                setFooterText(ts);
 
                 // can delete
                 deleteBTN.setOnClickListener(new View.OnClickListener() {
@@ -174,6 +175,21 @@ public class Thermostat extends MainActivity {
                 });
             }
         });
+    }
+
+    //method to display additional info @ bottom of the screen
+    private void setFooterText(ThermostatSetting ts) {
+
+        TextView footer = findViewById(R.id.footer);
+        String day = ts.getDay();
+        String hour = ts.getHour();
+        String temp = String.valueOf(ts.getTemp());
+        String date = ts.getDate();
+
+        String combo = "On " + day + " @ " + hour + " temperature set to " + temp +
+                "°C \n date created: " + date;
+
+                footer.setText(combo);
     }
 
     // Called on Database change
@@ -239,7 +255,7 @@ public class Thermostat extends MainActivity {
         return true;
     }
 
-    // ==================== ThermostatDBConn Class Start ============================= //
+    // ==================== ThermostatDBConn Class Start ================================= //
 
     private class ThermostatDBConn extends AsyncTask<String, Integer, String> {
 
@@ -259,6 +275,7 @@ public class Thermostat extends MainActivity {
             dbHelper = new DatabaseHelper(Thermostat.this);
             sqLiteDatabase = dbHelper.getWritableDatabase();
             cursor = query();
+            cursor = sort();
 
             caseCode = 0;
             try { caseCode = Integer.parseInt(args[0]);
@@ -370,6 +387,21 @@ public class Thermostat extends MainActivity {
         // Get all data from THERMOSTAT_TABLE
         public Cursor query() {
             return cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + DatabaseHelper.THERMOSTAT_TABLE, null);
+        }
+
+        // sort THERMOSTAT_TABLE and order by day of the week, then hour
+        public Cursor sort() {
+            return cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + DatabaseHelper.THERMOSTAT_TABLE +
+                    " ORDER BY \n" +
+                    "     CASE\n" +
+                    "          WHEN day = 'Sunday' THEN 1\n" +
+                    "          WHEN day = 'Monday' THEN 2\n" +
+                    "          WHEN day = 'Tuesday' THEN 3\n" +
+                    "          WHEN day = 'Wednesday' THEN 4\n" +
+                    "          WHEN day = 'Thursday' THEN 5\n" +
+                    "          WHEN day = 'Friday' THEN 6\n" +
+                    "          WHEN day = 'Saturday' THEN 7\n" +
+                    "     END ASC, hour DESC;", null);
         }
 
         // Get Row from THERMOSTAT_TABLE where ID matches passed id.

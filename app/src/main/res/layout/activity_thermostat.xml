@@ -28,11 +28,24 @@
 
     <ListView
         android:id="@+id/thermostat_list"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:choiceMode="singleChoice"
         android:listSelector="@color/sleectedListView"
-        android:layout_below="@+id/thermostatTitle" />
+        android:layout_below="@+id/thermostatTitle"
+        android:layout_above="@+id/footer">
+
+    </ListView>
+
+    <TextView
+        android:id="@+id/footer"
+        android:textSize="15sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/activity_button_bar"
+        android:textAlignment="center"
+        android:text="" />
 
     <LinearLayout
         android:id="@+id/activity_button_bar"
