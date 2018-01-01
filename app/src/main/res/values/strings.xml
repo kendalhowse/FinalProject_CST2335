@@ -38,6 +38,7 @@
 
     <!-- Thermostat Strings -->
     <string name="thermostat_day_TV">Day of the Week: </string>
+    <string name="thermostat_day_ET"> Monday</string>
     <string name="thermostat_hour_TV">Hour (24hr): </string>
     <string name="thermostat_temp_TV">Temperature: </string>
     <string name="degrees"> -15 </string>

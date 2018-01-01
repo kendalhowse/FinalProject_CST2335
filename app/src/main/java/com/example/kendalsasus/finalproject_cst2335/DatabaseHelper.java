@@ -36,6 +36,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public final static String ACTIVITY_DATE = "Date";
     public final static String ACTIVITY_COMMENT = "Comments";
 
+    //Added by Steven on 2017-12-31
+    public final static String THERMOSTAT_TABLE = "thermostat_settings";
+    public final static String THERMOSTAT_DAY = "day";
+    public final static String THERMOSTAT_HOUR = "hour";
+    public final static String THERMOSTAT_TEMP = "temp";
+    public final static String THERMOSTAT_DATE = "date";;
+
+
     public DatabaseHelper(Context ctx){
         super(ctx, DATABASE_NAME, null, VERSION_NUM);
     }
@@ -61,11 +69,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(sqlActivity);
         Log.i("DataBase Helper", "Creating activity tracker table");
 
-        /*
-            toDo:
-            STEVE:
-            PUT YOUR CREATE TABLE STATEMENTS HERE AND YOUR REQUIRED COLUMN NAMES AS FIELDS UP ABOVE
-         */
+        //Thermostat Table
+        String sqlThermostat = "CREATE TABLE " + THERMOSTAT_TABLE + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                THERMOSTAT_DAY + " TEXT, " + THERMOSTAT_HOUR + " TEXT, " + THERMOSTAT_TEMP + " INT, " + THERMOSTAT_DATE + " INT);";
+        db.execSQL(sqlThermostat);
+        Log.i("DataBase Helper", "Creating thermostat tracker table");
+
     }
 
     @Override
@@ -73,6 +82,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + AUTO_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + NUTRITION_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + ACTIVITY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + THERMOSTAT_TABLE);
         onCreate(db);
 
     }
@@ -82,6 +92,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + AUTO_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + NUTRITION_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + ACTIVITY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + THERMOSTAT_TABLE);
         onCreate(db);
     }
 

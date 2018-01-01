@@ -12,7 +12,6 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:layout_above="@+id/thermostat_list"
         android:layout_alignParentStart="true"
         android:visibility="visible" />
 
@@ -20,9 +19,7 @@
         android:id="@+id/thermostat_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/activity_button_bar" />
+        android:layout_below="@+id/thermostatProgressBar" />
 
     <LinearLayout
         android:id="@+id/activity_button_bar"
