@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static String DATABASE_NAME = " myDatabase.db";
-    public static int VERSION_NUM = 2;
+    public static int VERSION_NUM = 3;
     public final static String ID = "_id";
 
     public final static String AUTO_TABLE = "automobile";
@@ -31,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //Added by Melissa on 2017-12-13
     public final static String ACTIVITY_TABLE = "activities";
-    public final static String ACTIVITY_TYPE = "Activity Type";
+    public final static String ACTIVITY_TYPE = "Type";
     public final static String ACTIVITY_DURATION = "Duration";
     public final static String ACTIVITY_DATE = "Date";
     public final static String ACTIVITY_COMMENT = "Comments";
@@ -65,7 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //Activity Table
         String sqlActivity = "CREATE TABLE " + ACTIVITY_TABLE + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                ACTIVITY_TYPE + " TEXT, " + ACTIVITY_DURATION + " INT, " + ACTIVITY_COMMENT + " TEXT, " + ACTIVITY_DATE + " INT);";
+                ACTIVITY_TYPE + " TEXT, " + ACTIVITY_DURATION + " INT, " + ACTIVITY_DATE + " TEXT, " + ACTIVITY_COMMENT + " TEXT);";
         db.execSQL(sqlActivity);
         Log.i("DataBase Helper", "Creating activity tracker table");
 

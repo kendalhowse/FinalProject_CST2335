@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -85,18 +86,61 @@ public class ActivityTracker extends MainActivity {
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //start the MessageDetails class
+                //start the AddActivityEntry class
                 Intent intent = new Intent(ActivityTracker.this, AddActivityEntry.class);
                 startActivityForResult(intent, 10);
 
             }
         });
 
+        // Response to clicking listview item - get position
+        activityList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                // delete selected entry from list
+                deleteBtn.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        Log.i("ActivityTracker", "Delete button selected");
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ActivityTracker.this);
+                        builder.setTitle("Delete");
+                        builder.setMessage("Do you want to delete the selected activity?");
+                        // Add the buttons
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User clicked OK button
+                                //delete the item from the database - create method
+                            }
+                        });
+                        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                                //do nothing but go back to list
+                            }
+                        });
+                        // Create the AlertDialog
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
+                });
+
+                // edit selected entry from list
+                editBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //go back to the add fragment and use result code to modify the current list item
+                    }
+                });
+            }
+        });
+
+
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //adds to database
-
         adapter.notifyDataSetChanged();
         try {
             DatabaseSetup conn = new DatabaseSetup();
@@ -143,8 +187,20 @@ public class ActivityTracker extends MainActivity {
                     // Add content for activity help
                     author.setText("Author: Melissa Rajala");
                     version.setText("Version: 1.0");
-                    instructions.setText("1.");
-                    //TO DO: Finish instructions
+                    instructions.setText(
+                            "1. Add a new Activity Entry \n" +
+                                    "Click the '+' button at the bottom of the application to add a new activity. You will be prompted for the activity type." +
+                                    "You may select from 5 different activities: Running, Walking, Biking, Swimming, and Skating." +
+                                    "Enter the duration of the activity (in minutes) as well as any comments related to the activity." +
+                                    "Once a new activity has been submitted, it is visible in the main screen of the Activity application." +
+                                    "Click on the activities to view the details. \n" +
+                                    "2. Edit an Existing Activity \n" +
+                                            "Select an activity to edit the details. Click the edit button at the bottom of the application to bring up" +
+                                    "the edit dialog. \n" +
+                                    "3. Delete an Existing Activity \n" +
+                                    "Click the trash button at the bottom of the application to delete the selected activity."
+                    );
+
 
             builder.create();
             builder.show();
@@ -190,21 +246,7 @@ public class ActivityTracker extends MainActivity {
             switch (caseNumber) {
                 case 1:
                     Log.i("ActivityTracker", "In doInBackground CASE 1");
-                    //resets the iteration of results
-                    results.moveToFirst();
-
-                    //How many rows in the results:
-                    int numResults = results.getCount();
-
-                    for (int i= 0; i < numResults; i++){
-                        activityArray.add(new Activity(
-                                results.getString(results.getColumnIndex(DatabaseHelper.ACTIVITY_TYPE)),
-                                results.getInt(results.getColumnIndex(DatabaseHelper.ACTIVITY_DURATION)),
-                                results.getString(results.getColumnIndex(DatabaseHelper.ACTIVITY_DATE)),
-                                results.getString(results.getColumnIndex(DatabaseHelper.ACTIVITY_COMMENT))
-                        ));
-                        results.moveToNext();
-                    }
+                    updateListView();
                     break;
                 case 10:
                     Log.i("ActivityTracker", "In doInBackground CASE 10");
@@ -218,11 +260,13 @@ public class ActivityTracker extends MainActivity {
                     comment = bundle.getString("activityComment");
                     date = bundle.getString("activityDate");
 
-                    ds.updateActivityDB(activity, intDuration, comment, date);
+                    ds.updateActivityDB(activity, intDuration, date, comment);
                     Log.i("ActivityTracker", "Got new Activity data from bundle");
                     results.moveToLast();
 
                     activityArray.add(new Activity(activity, intDuration, date, comment));
+
+//                    updateListView();
                     break;
                 }
             return "";
@@ -259,6 +303,24 @@ public class ActivityTracker extends MainActivity {
 
             //Then insert
             db.insert(DatabaseHelper.ACTIVITY_TABLE, "" , newData);
+        }
+
+        public void updateListView(){
+            //resets the iteration of results
+            results.moveToFirst();
+
+            //How many rows in the results:
+            int numResults = results.getCount();
+
+            for (int i= 0; i < numResults; i++){
+                activityArray.add(new Activity(
+                        results.getString(results.getColumnIndex(DatabaseHelper.ACTIVITY_TYPE)),
+                        results.getInt(results.getColumnIndex(DatabaseHelper.ACTIVITY_DURATION)),
+                        results.getString(results.getColumnIndex(DatabaseHelper.ACTIVITY_DATE)),
+                        results.getString(results.getColumnIndex(DatabaseHelper.ACTIVITY_COMMENT))
+                ));
+                results.moveToNext();
+            }
         }
 
         public void setBundle(Bundle bundle) {
