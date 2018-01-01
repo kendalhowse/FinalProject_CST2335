@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 /* @author Steven Adema
@@ -25,7 +26,7 @@ public class ThermostatFragment extends Fragment {
     public String day;
     public String hour;
     public Integer temp;
-    public EditText dayET;
+    public Spinner daySpinner;
     public EditText hourET;
     public EditText tempET;
     public FrameLayout frame;
@@ -40,7 +41,7 @@ public class ThermostatFragment extends Fragment {
 
         frame = (FrameLayout) inflater.inflate(R.layout.activity_thermostat_add_entry, view, false);
         Button submitBTN = frame.findViewById(R.id.submitBTN);
-        dayET = frame.findViewById(R.id.thermostat_day_ET);
+        daySpinner = frame.findViewById(R.id.thermostatSpinner);
         hourET = frame.findViewById(R.id.thermostat_hour_ET);
         tempET = frame.findViewById(R.id.thermostat_temp_ET);
 
@@ -109,7 +110,7 @@ public class ThermostatFragment extends Fragment {
         String hourUpdated = "";
         Integer tempUpdated = 0;
 
-        try {  dayUpdated = dayET.getText().toString().trim();
+        try {  dayUpdated = daySpinner.getSelectedItem().toString();
         } catch (NumberFormatException n) { Log.e(ACTIVITY_NAME, "NumberFormatException at day", n); }
         try {  hourUpdated = hourET.getText().toString().trim();
         } catch (NumberFormatException n) { Log.e(ACTIVITY_NAME, "NumberFormatException at hour", n); }
@@ -137,11 +138,25 @@ public class ThermostatFragment extends Fragment {
 
     }  //end of addThermostatEntry
 
-    //populate fragment with info from the selected ThermostatSetting
+    //method to populate fragment with info from the selected ThermostatSetting
     public void updateThermostatSetting(){
-        dayET.setText(day);
+
+        daySpinner.setSelection(getIndex(daySpinner, day));
         hourET.setText(hour);
         tempET.setText(String.format("%d",temp));
+    }
+
+    //method to get index of selected day from the spinner
+    private int getIndex(Spinner spinner, String day)
+    {
+        int index = 0;
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(day)){
+                index = i;
+                break;
+            }
+        }
+        return index;
     }
 
 } //end of ThermostatFragement class
