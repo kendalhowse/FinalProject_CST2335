@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Thermostat Strings -->
+    <string name="thermostat_day_TV">Dag van de Week: </string>
+    <string name="thermostat_day_ET"> Maandag</string>
+    <string name="thermostat_hour_TV">Uur (24uur): </string>
+    <string name="thermostat_temp_TV">Temperatuur: </string>
+    <string name="degrees"> 21 </string>
+    <string name="degreesC"> °C </string>
+    <string name="hour_ET"> 12:00 </string>
+    <string name="thermostat_SubmitNew"> Voorleg </string>
+    <string name="thermostat_SubmitNotNew"> Bijwerk </string>
+    <string name="ThermostatAddEntryTitle"> Maak een Nieuwe Instelling </string>
+    <string name="thermostatTitleText"> Thermostaat Instellingen </string>
+
+    <string-array name="days_of_the_week">
+        <item>Maandag</item>
+        <item>Dinsdag</item>
+        <item>Woensdag</item>
+        <item>Donderdag</item>
+        <item>Vrijdag</item>
+        <item>zaterdag</item>
+        <item>zondag</item>
+    </string-array>
+
+    <string name="btn_delete">Verwijder</string>
+    <string name="btn_add">Toevoeg</string>
+    <string name="btn_edit">Bewerk</string>
+    btn_delete
+    <!-- End of Thermostat Strings -->
+
+
+</resources>

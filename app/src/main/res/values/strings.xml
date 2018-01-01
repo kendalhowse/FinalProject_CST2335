@@ -41,13 +41,13 @@
     <string name="thermostat_day_ET"> Monday</string>
     <string name="thermostat_hour_TV">Hour (24hr): </string>
     <string name="thermostat_temp_TV">Temperature: </string>
-    <string name="degrees"> -15 </string>
+    <string name="degrees"> 21 </string>
     <string name="degreesC"> °C </string>
     <string name="hour_ET"> 12:00 </string>
     <string name="thermostat_SubmitNew"> Submit as New </string>
     <string name="thermostat_SubmitNotNew"> Update Existing </string>
     <string name="ThermostatAddEntryTitle"> Create New Thermostat Setting </string>
-
+    <string name="thermostatTitleText"> Thermostat Settings </string>
 
     <string-array name="days_of_the_week">
         <item>Monday</item>

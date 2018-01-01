@@ -112,6 +112,7 @@
             android:id="@+id/degreesC"
             android:layout_width="102dp"
             android:layout_height="30dp"
+            android:layout_marginBottom="44dp"
             android:text="@string/degreesC"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/griddy"
