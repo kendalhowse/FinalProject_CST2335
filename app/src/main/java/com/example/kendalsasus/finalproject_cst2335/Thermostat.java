@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class Thermostat extends MainActivity {
     public ThermostatAdapter thermostatAdapter;
     public ThermostatDBConn thermostatDBC;
     public int requestCode;
+    public int currentTemp;
     public String ACTIVITY_NAME = "Thermostat";
 
 
@@ -161,6 +163,7 @@ public class Thermostat extends MainActivity {
                     public void onClick(View v) {
                         requestCode = 2;
 
+
                         // current ThermostatSetting is used to populate a new entry in AsyncTask database
                         ThermostatSetting ts = thermostatDBC.selectById((int) currentItem);
                         Intent intent = new Intent(Thermostat.this, ThermostatAddEntry.class);
@@ -177,6 +180,13 @@ public class Thermostat extends MainActivity {
         });
     }
 
+    //refresh ListView when back button is pressed in Add Thermostat Activity
+    @Override
+    public void onResume() {
+        super.onResume();
+        thermostatAdapter.notifyDataSetChanged();
+    }
+
     //method to display additional info @ bottom of the screen
     private void setFooterText(ThermostatSetting ts) {
 
@@ -189,7 +199,7 @@ public class Thermostat extends MainActivity {
         String combo = "On " + day + " @ " + hour + " temperature set to " + temp +
                 "°C \n date created: " + date;
 
-                footer.setText(combo);
+        footer.setText(combo);
     }
 
     // Called on Database change
@@ -214,7 +224,7 @@ public class Thermostat extends MainActivity {
         super.onOptionsItemSelected(menuItem);
 
         //create help menu instructions
-        //structure of this layout credited to Chris Labelle
+        //structure of this AlertDialog box credited to Chris Labelle
         switch(menuItem.getItemId()){
             case R.id.mi_help:
                 AlertDialog.Builder custom = new AlertDialog.Builder(this);
@@ -275,18 +285,20 @@ public class Thermostat extends MainActivity {
             dbHelper = new DatabaseHelper(Thermostat.this);
             sqLiteDatabase = dbHelper.getWritableDatabase();
             cursor = query();
-            cursor = sort();
+            // cursor = sort();
 
             caseCode = 0;
             try { caseCode = Integer.parseInt(args[0]);
             } catch (NumberFormatException e) { Log.e(ACTIVITY_NAME, "NumberFormatException", e);}
 
             switch (caseCode) {
+
                 //get current entries
                 case 1:
                     getExistingEntries();
                     progressBar.setProgress(60);
                     break;
+
                 //get thermostatsetting metrics for arraylist
                 case 3:
                     day = info.getString("day");
@@ -297,8 +309,9 @@ public class Thermostat extends MainActivity {
                     writeDB(day, hour, temp, timestamp);
                     cursor.moveToLast();
                     thermostatArrayList.add(new ThermostatSetting(day, hour, temp, timestamp));
-
+                    thermostatAdapter.notifyDataSetChanged();  //new
                     break;
+
                 //update database
                 case 4:
                     position = info.getInt("Position");
@@ -307,7 +320,6 @@ public class Thermostat extends MainActivity {
                     temp = info.getInt("temp");
                     id = info.getLong("ID");
                     updateDB(position, day, hour, temp, id);
-
             }
             return "";
 
@@ -347,7 +359,7 @@ public class Thermostat extends MainActivity {
                 cursor.moveToNext();
             }
         }
-              // ------- START of Methods for deleting, editing and updating Thermostat Table ----- //
+        // ------------- START of Methods for deleting, editing and updating Thermostat Table ----------- //
 
         // method for deleting row
         public void deleteDB(ThermostatSetting ts){
@@ -360,12 +372,13 @@ public class Thermostat extends MainActivity {
             ThermostatSetting ts = thermostatArrayList.get(position);
 
             // query to update thermostat table
-            String sql = "UPDATE " + DatabaseHelper.THERMOSTAT_TABLE + " SET " +
-                    DatabaseHelper.THERMOSTAT_DAY + " = " + day + ", " +
-                    DatabaseHelper.THERMOSTAT_HOUR + " = " + hour + ", " +
+            String query = "UPDATE " + DatabaseHelper.THERMOSTAT_TABLE + " SET " +
+                    DatabaseHelper.THERMOSTAT_DAY + " = '" + day + "', " +
+                    DatabaseHelper.THERMOSTAT_HOUR + " = '" + hour + "', " +
                     DatabaseHelper.THERMOSTAT_TEMP + " = " + temp + " WHERE " +
-                    DatabaseHelper.THERMOSTAT_DATE + " = " + ts.getTimestamp();
-            sqLiteDatabase.execSQL(sql);
+                    DatabaseHelper.ID + " = '" + id + "'";
+
+            sqLiteDatabase.execSQL(query);
 
             ts.setDay(day);
             ts.setHour(hour);
@@ -382,11 +395,33 @@ public class Thermostat extends MainActivity {
             sqLiteDatabase.insert(DatabaseHelper.THERMOSTAT_TABLE, "null", values);
         }
 
-             // ------- END of Methods for deleting, editing and updating Thermostat Table ----- //
 
         // Get all data from THERMOSTAT_TABLE
         public Cursor query() {
+            String table = getTableAsString(sqLiteDatabase, "THERMOSTAT_TABLE");
+            Log.i("zxc", table);
             return cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + DatabaseHelper.THERMOSTAT_TABLE, null);
+        }
+
+        //method to print the Thermostat Table in Logcat
+        //credit to user A.Wan on stackoverflow https://stackoverflow.com/questions/27003486/printing-all-rows-of-a-sqlite-database-in-android
+        //
+        public String getTableAsString(SQLiteDatabase db, String tableName) {
+            Log.d("xvc", "getTableAsString called");
+            String tableString = String.format("Table %s:\n", tableName);
+            Cursor allRows  = db.rawQuery("SELECT * FROM " + DatabaseHelper.THERMOSTAT_TABLE,null);
+            if (allRows.moveToFirst() ){
+                String[] columnNames = allRows.getColumnNames();
+                do {
+                    for (String name: columnNames) {
+                        tableString += String.format("%s: %s\n", name,
+                                allRows.getString(allRows.getColumnIndex(name)));
+                    }
+                    tableString += "\n";
+                } while (allRows.moveToNext());
+            }
+
+            return tableString;
         }
 
         // sort THERMOSTAT_TABLE and order by day of the week, then hour
@@ -403,6 +438,8 @@ public class Thermostat extends MainActivity {
                     "          WHEN day = 'Saturday' THEN 7\n" +
                     "     END ASC, hour DESC;", null);
         }
+
+        // --------------------- END of Methods for deleting, editing and updating Thermostat Table ---------- //
 
         // Get Row from THERMOSTAT_TABLE where ID matches passed id.
         public ThermostatSetting selectById(int id) {
@@ -423,7 +460,6 @@ public class Thermostat extends MainActivity {
         // method to retrieve ID of ThermostatSetting setting by row number
         public long idbyPos(int index){
             cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + DatabaseHelper.THERMOSTAT_TABLE, null);
-
             cursor.moveToPosition(index);
             long foundID = cursor.getLong(cursor.getColumnIndex(DatabaseHelper.ID));
             return foundID;
@@ -448,6 +484,7 @@ public class Thermostat extends MainActivity {
         //default constructor
         public ThermostatSetting(){}
 
+        //parameterized constructor
         public ThermostatSetting(String day, String hour, Integer temp, long timestamp){
             this.day = day;
             this.hour = hour;
@@ -484,9 +521,6 @@ public class Thermostat extends MainActivity {
 
         public long getTimestamp() {
             return timestamp;
-        }
-        public void setTimestamp(long timestamp) {
-            this.timestamp = timestamp;
         }
 
         public int getId(){

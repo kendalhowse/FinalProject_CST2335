@@ -19,7 +19,7 @@
             android:id="@+id/ThermostatAddEntryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:text="@string/ThermostatAddEntryTitle"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp"
@@ -30,8 +30,8 @@
         <GridLayout
             android:id="@+id/griddy"
             android:layout_width="384dp"
-            android:layout_height="174dp"
-            android:layout_marginTop="72dp"
+            android:layout_height="172dp"
+            android:layout_marginTop="116dp"
             android:columnCount="2"
             android:rowCount="4"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -47,11 +47,11 @@
 
             <Spinner
                 android:id="@+id/thermostatSpinner"
-                android:textAlignment="center"
                 android:layout_width="175dp"
-                android:ems="10"
                 android:layout_height="wrap_content"
-                android:entries="@array/days_of_the_week" />
+                android:ems="10"
+                android:entries="@array/days_of_the_week"
+                android:textAlignment="center" />
 
             <TextView
                 android:id="@+id/thermostat_hour_TV"
@@ -97,26 +97,40 @@
 
         <Button
             android:id="@+id/submitBTN"
-            android:layout_width="220dp"
-            android:layout_height="42dp"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:textSize="20sp"
             android:layout_marginTop="24dp"
             android:backgroundTint="@color/btnBack"
-            android:text="@string/thermostat_SubmitNew"
+            android:text="@string/thermostat_Submit"
             android:textColor="@color/colorPrimary"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/griddy" />
 
+        <Button
+            android:id="@+id/asNewBTN"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:textSize="20sp"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@color/btnBack"
+            android:text="@string/thermostat_SubmitNew"
+            android:textColor="@color/colorPrimary"
+            android:visibility="invisible"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/submitBTN" />
+
         <TextView
             android:id="@+id/degreesC"
             android:layout_width="102dp"
             android:layout_height="30dp"
-            android:layout_marginBottom="44dp"
+            android:layout_marginBottom="56dp"
             android:text="@string/degreesC"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/griddy"
             app:layout_constraintRight_toRightOf="@id/griddy" />
-
 
     </android.support.constraint.ConstraintLayout>
 

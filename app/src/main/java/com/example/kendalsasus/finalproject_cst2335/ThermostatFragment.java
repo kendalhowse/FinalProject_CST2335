@@ -26,6 +26,7 @@ public class ThermostatFragment extends Fragment {
     public String day;
     public String hour;
     public Integer temp;
+    public Button submitAsNewBTN;
     public Spinner daySpinner;
     public EditText hourET;
     public EditText tempET;
@@ -41,11 +42,37 @@ public class ThermostatFragment extends Fragment {
 
         frame = (FrameLayout) inflater.inflate(R.layout.activity_thermostat_add_entry, view, false);
         Button submitBTN = frame.findViewById(R.id.submitBTN);
+        submitAsNewBTN = frame.findViewById(R.id.asNewBTN);
         daySpinner = frame.findViewById(R.id.thermostatSpinner);
         hourET = frame.findViewById(R.id.thermostat_hour_ET);
         tempET = frame.findViewById(R.id.thermostat_temp_ET);
 
-        if(requestCode == 2){ updateThermostatSetting(); }
+        if(requestCode == 2){
+
+            updateThermostatSetting();
+            submitAsNewBTN.setVisibility(View.VISIBLE);
+            String updateString = getString(R.string.thermostat_update);
+            submitBTN.setText(updateString);
+        }
+
+        submitAsNewBTN.setOnClickListener(new View.OnClickListener() {
+            boolean bool;
+            public void onClick(View v) {
+                Bundle newBundle = addThermostatEntry(frame);
+                Intent intent = new Intent(frame.getContext(), Thermostat.class);
+                intent.putExtras(newBundle);
+
+                getActivity().setResult(3, intent);
+
+                getActivity().getFragmentManager().beginTransaction().remove(ThermostatFragment.this).commit();
+
+                if(boolData) {
+                    if (bool) { //data accepted, remove fragment
+                        getActivity().getFragmentManager().beginTransaction().remove(ThermostatFragment.this).commit();
+                    } else { getActivity().finish();  }
+                }
+            }
+        }); //end of submitAsNewBTN.setOnClickListener
 
         submitBTN.setOnClickListener(new View.OnClickListener() {
             boolean bool;
@@ -117,8 +144,8 @@ public class ThermostatFragment extends Fragment {
         try {  tempUpdated = Integer.parseInt(tempET.getText().toString().trim());
         } catch (NumberFormatException n) { Log.e(ACTIVITY_NAME, "NumberFormatException at int", n); }
 
-        //todo: get conditional to work
-        if (dayUpdated.matches("") || hourUpdated.matches("") || tempUpdated == null ) {
+        Log.i("codename", Integer.toString(tempUpdated));
+        if (dayUpdated.matches("") || hourUpdated.matches("") || tempUpdated == 0 ) {
             Toast toast = Toast.makeText(getActivity(), "Please fill out all fields to submit", Toast.LENGTH_SHORT);
             toast.show();
             boolData = false;
