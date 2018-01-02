@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class ActivityTracker extends MainActivity {
 
     ListView activityList;
     LinearLayout buttonBar;
+    LinearLayout detailsBar;
     ImageButton addBtn;
     ImageButton deleteBtn;
     ImageButton editBtn;
@@ -39,6 +41,8 @@ public class ActivityTracker extends MainActivity {
     DatabaseSetup ds;
     ActivityAdapter adapter;
     public int requestCode;
+    ProgressBar progress;
+    TextView details;
 
 
     //activity adaptor to display activities in list view
@@ -76,6 +80,11 @@ public class ActivityTracker extends MainActivity {
         addBtn = findViewById(R.id.activity_button_add);
         deleteBtn = findViewById(R.id.activity_button_delete);
         editBtn = findViewById(R.id.activity_button_edit);
+        detailsBar = findViewById(R.id.activity_details_bar);
+
+
+        progress = (ProgressBar) findViewById(R.id.activityProgress);
+        progress.setVisibility(View.VISIBLE);
 
         //working with the databse - view activities existing in the database within the ListView
         ds = new DatabaseSetup();
@@ -100,6 +109,10 @@ public class ActivityTracker extends MainActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
+                //show details of selected activity
+                getActivityDetails(activityArray.get(position));
+                detailsBar.setVisibility(View.VISIBLE);
+
                 final String activity = activityArray.get(position).getType().toString();
                 final String comment = activityArray.get(position).getComment().toString();
                 final String duration = String.valueOf(activityArray.get(position).getDuration());
@@ -123,6 +136,9 @@ public class ActivityTracker extends MainActivity {
                                 Snackbar.make(findViewById(R.id.activity_list), "You deleted " + activity,
                                         Snackbar.LENGTH_SHORT)
                                         .show();
+                                //clear the details
+                                details = (TextView) findViewById(R.id.details);
+                                details.setText("");
                             }
                         });
                         builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -231,6 +247,20 @@ public class ActivityTracker extends MainActivity {
         return true;
     }
 
+    //get details and show under list of activities
+    public void getActivityDetails(Activity activity){
+        details = (TextView) findViewById(R.id.details);
+
+        String date = activity.getDate();
+        String type = activity.getType();
+        String comment = activity.getComment();
+        int duration = activity.getDuration();
+
+        details.setText("Activity: " + type + "\n Duration: " + duration + " minutes \n Comments: " + comment + "\n Date: " + date);
+
+    }
+
+
     // Connecting to Database
     public class DatabaseSetup extends AsyncTask<String, Integer, String>
     {
@@ -277,6 +307,13 @@ public class ActivityTracker extends MainActivity {
                 case 10:
                     //add entry
                     Log.i("ActivityTracker", "In doInBackground Case 10");
+                    // sleep for progress to be visible
+                    try {
+                        Thread.sleep(1500, 2000);
+                    } catch (InterruptedException e) {
+                        Log.e("ActivityTracker", "InteruptedException", e);
+                    }
+                    progress.setProgress(70);
                     activity = bundle.getString("activityType");
                     duration = bundle.getString("activityDuration");
                     try {
@@ -297,6 +334,7 @@ public class ActivityTracker extends MainActivity {
                 case 20:
                     Log.i("ActivityTracker", "In doInBackground Case 20");
                     //update existing entry
+                    progress.setProgress(70);
                     id = bundle.getLong("activityID");
                     activity = bundle.getString("activityType");
                     duration = bundle.getString("activityDuration");
@@ -317,9 +355,10 @@ public class ActivityTracker extends MainActivity {
 
 
         @Override
-        protected void onProgressUpdate(Integer... args)
+        protected void onProgressUpdate(Integer... value)
         {
-            //fill this out
+            progress.setVisibility(View.VISIBLE);
+            progress.setProgress(value[0]);
         }
 
         @Override
@@ -327,6 +366,7 @@ public class ActivityTracker extends MainActivity {
         {
             adapter.notifyDataSetChanged();
             activityList.setVisibility(View.VISIBLE);
+            progress.setVisibility(View.INVISIBLE);
         }
 
         // get results for content of Activity Databse
@@ -362,7 +402,6 @@ public class ActivityTracker extends MainActivity {
             //update array list too..
             int integerId = (int) id;
             activityArray.set(integerId, new Activity(type, duration, date, comment));
-            adapter.notifyDataSetChanged();
         }
 
 
