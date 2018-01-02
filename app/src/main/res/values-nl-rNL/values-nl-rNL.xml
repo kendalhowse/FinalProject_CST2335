@@ -8,7 +8,9 @@
     <string name="degrees"> 21 </string>
     <string name="degreesC"> °C </string>
     <string name="hour_ET"> 12:00 </string>
-    <string name="thermostat_SubmitNew"> Voorleg </string>
+    <string name="thermostat_Submit"> Voorleg </string>
+    <string name="thermostat_update"> Bijwerk bestaanden Intelling </string>
+    <string name="thermostat_SubmitNew"> Voorleg of Nieuwe </string>
     <string name="thermostat_SubmitNotNew"> Bijwerk </string>
     <string name="ThermostatAddEntryTitle"> Maak een Nieuwe Instelling </string>
     <string name="thermostatTitleText"> Thermostaat Instellingen </string>
