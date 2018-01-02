@@ -44,6 +44,7 @@ public class NutritionTracker extends MainActivity {
     private TextView tvTotalCarbs;
     private int selectedEntry;
     private NutritionAdapter nutritionAdapter; // used to access ListView Adapter.
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,8 @@ public class NutritionTracker extends MainActivity {
         tvTotalCalories = findViewById(R.id.nutrition_total_calories_textView);
         tvTotalFat = findViewById(R.id.nutrition_total_fat_textView);
         tvTotalCarbs = findViewById(R.id.nutrition_total_carbs_textView);
+        progressBar = findViewById(R.id.nutrition_progress_bar);
+        progressBar.setVisibility(View.VISIBLE);
 
         nutritionAddEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,7 +182,7 @@ public class NutritionTracker extends MainActivity {
         }
         tvTotalCalories.setText(getApplicationContext().getString(R.string.nutrition_daily_calories_eaten) + " " + String.valueOf(totalCalories));
         tvTotalFat.setText(getApplicationContext().getString(R.string.nutrition_daily_fat_eaten) + " " + String.valueOf(totalFat) + " g");
-        tvTotalCarbs.setText(getApplicationContext().getString(R.string.nutrition_daily_carbs_eaten) + " " + String.valueOf(totalFat) + " g");
+        tvTotalCarbs.setText(getApplicationContext().getString(R.string.nutrition_daily_carbs_eaten) + " " + String.valueOf(totalCarbs) + " g");
     }
 
     @Override
@@ -244,7 +247,6 @@ public class NutritionTracker extends MainActivity {
 
         private SQLiteDatabase database;
         private Cursor dbCursor;
-        private ProgressBar progressBar;
         private int processCode;
         private Bundle info; // used to pass information accross objects and into database
 
@@ -281,7 +283,9 @@ public class NutritionTracker extends MainActivity {
                 // activity is launched and previous set data is displayed
                 case 1:
                     dbCursor = nutritionTableQuery();
+                    publishProgress(50);
                     loadPreFoods();
+                    publishProgress(100);
                     break;
                 // submit button is pressed in add_nutrition fragment
                 case 10:
