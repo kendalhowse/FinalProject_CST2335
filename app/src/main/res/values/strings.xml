@@ -68,6 +68,14 @@
     <!-- End of Thermostat Strings -->
 
     <!-- Activity Strings -->
+    <string name="activity_author">Author: Melissa Rajala</string>
+    <string name="activity_version">Version: 1.0</string>
+    <string name="activity_exit_help">Exited Help</string>
+    <string name="activity_time">Duration: </string>
+    <string name="activity_comment">Comments: </string>
+    <string name="activity_submit">Submit Entry</string>
+
+
     <string-array name="activity_types">
         <item>Running</item>
         <item>Walking</item>

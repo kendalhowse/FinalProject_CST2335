@@ -37,6 +37,24 @@
     <string name="nutrition_snackbar_update_entry">Inscription alimentaire actualisé</string>
     <!-- End of Chris' strings -->
 
+    <!-- Activity Strings -->
+    <string name="activity_author">Auteur: Melissa Rajala</string>
+    <string name="activity_version">Version Numero: 1.0</string>
+    <string name="activity_exit_help">Quitté Help</string>
+    <string name="activity_time">Durée: </string>
+    <string name="activity_comment">Commentaires: </string>
+    <string name="activity_submit">Soumettre une Entrée</string>
+
+
+    <string-array name="activity_types">
+        <item>Courer</item>
+        <item>Marche</item>
+        <item>Vélo</item>
+        <item>Natation</item>
+        <item>Patinage</item>
+    </string-array>
+    <!-- End of Activity Strings -->
+
 
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_main2">Main2Activity</string>

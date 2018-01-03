@@ -21,19 +21,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
-            android:hint="Activity Duration"/>
+            android:hint="@string/activity_time"/>
 
         <EditText
             android:id="@+id/activityComments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Comments"/>
+            android:hint="@string/activity_comment"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/submitBtn"
-            android:text="Submit Entry"
+            android:text="@string/activity_submit"
             android:layout_alignParentBottom="true" />
 
     </LinearLayout>

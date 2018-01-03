@@ -27,23 +27,27 @@ import android.widget.Toast;
 import com.example.kendalsasus.finalproject_cst2335.nutrition.NutritionTracker;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class ActivityTracker extends MainActivity {
 
-    ListView activityList;
-    LinearLayout buttonBar;
-    LinearLayout detailsBar;
-    ImageButton addBtn;
-    ImageButton deleteBtn;
-    ImageButton editBtn;
-    ArrayList<Activity> activityArray = new ArrayList<>(); //arraylist of Activities
-    DatabaseSetup ds;
-    ActivityAdapter adapter;
+    public static String ACTIVITY_NAME = "ActivityTracker";
+    public ListView activityList;
+    public LinearLayout buttonBar;
+    public LinearLayout detailsBar;
+    public LinearLayout monthlyBar;
+    public ImageButton addBtn;
+    public ImageButton deleteBtn;
+    public ImageButton editBtn;
+    public ArrayList<Activity> activityArray = new ArrayList<>(); //arraylist of Activities
+    public DatabaseSetup ds;
+    public ActivityAdapter adapter;
     public int requestCode;
-    ProgressBar progress;
-    TextView details;
-
+    public ProgressBar progress;
+    public TextView details;
+    public TextView monthly;
 
     //activity adaptor to display activities in list view
     private class ActivityAdapter extends ArrayAdapter<Activity> {
@@ -81,6 +85,7 @@ public class ActivityTracker extends MainActivity {
         deleteBtn = findViewById(R.id.activity_button_delete);
         editBtn = findViewById(R.id.activity_button_edit);
         detailsBar = findViewById(R.id.activity_details_bar);
+        monthlyBar = findViewById(R.id.activity_monthly_bar);
 
 
         progress = (ProgressBar) findViewById(R.id.activityProgress);
@@ -111,7 +116,10 @@ public class ActivityTracker extends MainActivity {
 
                 //show details of selected activity
                 getActivityDetails(activityArray.get(position));
-                detailsBar.setVisibility(View.VISIBLE);
+//                detailsBar.setVisibility(View.VISIBLE);
+
+                //check for monthly activites
+                getMonthlyMinutes();
 
                 final String activity = activityArray.get(position).getType().toString();
                 final String comment = activityArray.get(position).getComment().toString();
@@ -124,7 +132,7 @@ public class ActivityTracker extends MainActivity {
 
                     @Override
                     public void onClick(View view) {
-                        Log.i("ActivityTracker", "Delete button selected");
+                        Log.i(ACTIVITY_NAME, "Delete button selected");
                         AlertDialog.Builder builder = new AlertDialog.Builder(ActivityTracker.this);
                         builder.setTitle("Delete");
                         builder.setMessage("Do you want to delete the selected activity?");
@@ -139,6 +147,10 @@ public class ActivityTracker extends MainActivity {
                                 //clear the details
                                 details = (TextView) findViewById(R.id.details);
                                 details.setText("");
+                                if (position == 0){
+                                    monthly = (TextView) findViewById(R.id.monthly);
+                                    monthly.setText("Total duration for January is 0 minutes.");
+                                }
                             }
                         });
                         builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -218,14 +230,14 @@ public class ActivityTracker extends MainActivity {
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             //do nothing - except exit dialog
-                            Toast t = Toast.makeText(ActivityTracker.this, "Exited Help", Toast.LENGTH_LONG);
+                            Toast t = Toast.makeText(ActivityTracker.this, R.string.activity_exit_help, Toast.LENGTH_LONG);
                             t.show();
                         }
                     });
 
                     // Add content for activity help
-                    author.setText("Author: Melissa Rajala");
-                    version.setText("Version: 1.0");
+                    author.setText(R.string.activity_author);
+                    version.setText(R.string.activity_version);
                     instructions.setText(
                             "1. Add a new Activity Entry \n" +
                                     "Click the '+' button at the bottom of the application to add a new activity. You will be prompted for the activity type." +
@@ -260,10 +272,22 @@ public class ActivityTracker extends MainActivity {
 
     }
 
+    //get monthly stats
+    public void getMonthlyMinutes(){
+        monthly = (TextView) findViewById(R.id.monthly);
+        int minutes = 0;
+//        Calendar date = Calendar.getInstance();
+//        int month = date.get(Calendar.MONTH);
+
+        for (int i = 0; i < activityArray.size(); i++){
+            minutes += activityArray.get(i).getDuration();
+        }
+        monthly.setText("Total duration for January: " + minutes + " minutes.");
+    }
+
 
     // Connecting to Database
-    public class DatabaseSetup extends AsyncTask<String, Integer, String>
-    {
+    public class DatabaseSetup extends AsyncTask<String, Integer, String> {
         Bundle bundle;
         SQLiteDatabase db;
         DatabaseHelper dh;
@@ -280,9 +304,8 @@ public class ActivityTracker extends MainActivity {
 
 
         @Override
-        protected String doInBackground(String... args)
-        {
-            Log.i("ActivityTracker", "In doInBackground");
+        protected String doInBackground(String... args) {
+            Log.i(ACTIVITY_NAME, "In doInBackground");
             dh = new DatabaseHelper(ActivityTracker.this);
             //create a local variable for the SQLite database
             db = dh.getWritableDatabase();
@@ -301,17 +324,17 @@ public class ActivityTracker extends MainActivity {
 
             switch (caseNumber) {
                 case 1:
-                    Log.i("ActivityTracker", "In doInBackground Case 1");
+                    Log.i(ACTIVITY_NAME, "In doInBackground Case 1");
                     updateListView();
                     break;
                 case 10:
                     //add entry
-                    Log.i("ActivityTracker", "In doInBackground Case 10");
+                    Log.i(ACTIVITY_NAME, "In doInBackground Case 10");
                     // sleep for progress to be visible
                     try {
                         Thread.sleep(1500, 2000);
                     } catch (InterruptedException e) {
-                        Log.e("ActivityTracker", "InteruptedException", e);
+                        Log.e(ACTIVITY_NAME, "InteruptedException", e);
                     }
                     progress.setProgress(70);
                     activity = bundle.getString("activityType");
@@ -319,7 +342,7 @@ public class ActivityTracker extends MainActivity {
                     try {
                         intDuration = Integer.parseInt(duration);
                     } catch (NumberFormatException nfe){
-                        intDuration = 1;
+                        intDuration = 0;
                     }
                     comment = bundle.getString("activityComment");
                     date = bundle.getString("activityDate");
@@ -332,7 +355,7 @@ public class ActivityTracker extends MainActivity {
 
                     break;
                 case 20:
-                    Log.i("ActivityTracker", "In doInBackground Case 20");
+                    Log.i(ACTIVITY_NAME, "In doInBackground Case 20");
                     //update existing entry
                     progress.setProgress(70);
                     id = bundle.getLong("activityID");
@@ -349,21 +372,18 @@ public class ActivityTracker extends MainActivity {
 
                     break;
                 }
-
             return "";
         }
 
 
         @Override
-        protected void onProgressUpdate(Integer... value)
-        {
+        protected void onProgressUpdate(Integer... value) {
             progress.setVisibility(View.VISIBLE);
             progress.setProgress(value[0]);
         }
 
         @Override
-        protected void onPostExecute(String result)
-        {
+        protected void onPostExecute(String result) {
             adapter.notifyDataSetChanged();
             activityList.setVisibility(View.VISIBLE);
             progress.setVisibility(View.INVISIBLE);
